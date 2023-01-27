@@ -1,0 +1,30 @@
+const path = require("path");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+    entry: './src/index.ts', // use index in src folder
+    output: {
+        filename: 'index.js',
+        path: path.resolve(__dirname, 'dist')
+    },
+    resolve: {
+        extensions: [".ts", ".js"]
+    },
+    module: {
+        rules: [
+            { test: /\.tsx?$/, loader: "ts-loader" }
+        ]
+    },
+    mode: "development",
+    devtool: 'inline-source-map',
+    devServer: {
+        static: false,
+        port: 3000,
+    },
+    plugins: [
+        new HtmlWebpackPlugin ({
+            template: path.resolve(__dirname, 'src/index.html')
+        })
+    ]
+    
+};
