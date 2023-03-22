@@ -1,6 +1,6 @@
 import { ActionManager, Engine, HtmlElementTexture, Mesh, MeshBuilder, Scene, StandardMaterial, Texture, TransformNode, Vector3, WebXRDefaultExperience, WebXRFeatureName, WebXRFeaturesManager, WebXRMotionControllerTeleportation } from "babylonjs";
 import { AdvancedDynamicTexture, TextBlock } from "babylonjs-gui";
-import {Text, Spheres} from "../components"
+import {Text, Spheres, Audio, Cubes} from "../components"
 
 export class App {
     private engine: Engine;
@@ -20,13 +20,20 @@ export class App {
         scene.actionManager = new ActionManager(scene);
 
         scene.createDefaultCameraOrLight(false, true,true); 
+
+        //the following are test codes for the setups, they are to be changed
         const testText = new Text("testblock",1,0.2,450,100,new Vector3(1,0,0),"white","black",50,scene);
         new Spheres("testsphere",{diameter: 1.0}, scene, testText);
+        var testcube = new Cubes("testcube",{size: 1.0}, scene);
+        testcube.position.set(3,0,0);
+
+        const testAudio = new Audio(scene);
+        testAudio.createBGM("audio/8bit.mp3");
+        testAudio.BGM.setVolume(0.3);
 
 
-
-         //for the XR/VR experience
-         const xr = await scene.createDefaultXRExperienceAsync({
+        //for the XR/VR experience
+        const xr = await scene.createDefaultXRExperienceAsync({
             uiOptions: {
                 sessionMode: 'immersive-vr'
             },

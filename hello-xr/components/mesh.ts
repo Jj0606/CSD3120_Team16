@@ -45,3 +45,28 @@ export class Spheres extends AbstractMesh implements Meshes
         this.addChild(this.label.mesh);         
     }
 }
+
+export class Cubes extends AbstractMesh implements Meshes
+{
+    scene: Scene;
+    mesh: Mesh; 
+    label: Text;
+    onIntersectObservable : Observable<boolean>;
+    onDistanceChangeOberservable: Observable<number>;
+
+   /**
+    * Class constructor for a Sphere
+    * @param name 
+    * @param options 
+    * @param scene 
+    * @param authoringData 
+    */
+    constructor(name: string, options :{size: number}, scene: Scene)
+    {
+        super(name,scene);
+        this.scene = scene; 
+        this.mesh = MeshBuilder.CreateBox("box mesh", options, scene);
+        this.mesh.material = new StandardMaterial("box material",scene);
+        this.addChild(this.mesh);     
+    }
+}
