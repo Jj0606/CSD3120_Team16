@@ -17,6 +17,7 @@
     "babylonjs-gui": "^5.43.0"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
     "html-webpack-plugin": "^5.5.0",
     "ts-loader": "^9.4.2",
     "typescript": "^4.9.4",

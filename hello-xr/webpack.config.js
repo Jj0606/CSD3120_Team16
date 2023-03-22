@@ -1,5 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin')
+
 
 module.exports = {
     entry: './src/index.ts', // use index in src folder
@@ -18,12 +20,17 @@ module.exports = {
     mode: "development",
     devtool: 'inline-source-map',
     devServer: {
-        static: false,
+        static: true,
         port: 3000,
     },
     plugins: [
         new HtmlWebpackPlugin ({
             template: path.resolve(__dirname, 'src/index.html')
+        }),
+        new CopyPlugin({
+            patterns: [
+                {from: path.resolve(__dirname,'assets')}
+            ]
         })
     ]
     
