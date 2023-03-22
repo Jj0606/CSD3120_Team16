@@ -1,1 +1,20 @@
 # CSD3120_Team16
+Leonard Koh    ||  2000670
+Denise Goh     ||  2001220
+Jolyn Wong     ||  2001681
+Pho Kai Ting   ||  2002083
+Yu Ching Yin   ||  2002573
+
+# Description
+
+# Video Demo Link
+
+# User Evaluations 
+../CSD3120_Team16\User Evaluations
+
+
+# Instructions
+npm install
+npm install copy-webpack-plugin --save-dev
+npm run build
+npm run serve

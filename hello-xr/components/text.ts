@@ -1,8 +1,3 @@
-/**
- * @file text.ts
- * @author [Jolyn Wong]
- * @desc Contains information for creation of Text that are loaded in when being imported in another class
- */
 import { Mesh, MeshBuilder, Scene, Vector3 } from "babylonjs";
 import { AdvancedDynamicTexture, TextBlock } from "babylonjs-gui";
 
@@ -52,7 +47,7 @@ export class Text {
       meshheight,
       false
     );
-    
+
     helloTexture.background = bgColour;
     const helloText = new TextBlock(name);
     helloText.text = name;
