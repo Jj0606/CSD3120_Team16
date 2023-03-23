@@ -1,9 +1,11 @@
 # CSD3120_Team16
-Leonard Koh    ||  2000670
-Denise Goh     ||  2001220
-Jolyn Wong     ||  2001681
-Pho Kai Ting   ||  2002083
-Yu Ching Yin   ||  2002573
+Leonard Koh                     ||  2000670
+Denise Goh                      ||  2001220
+Jolyn Wong                      ||  2001681
+Pho Kai Ting                    ||  2002083
+Yu Ching Yin                    ||  2002573
+Javin Ong J-Min                 ||  2000578
+Nurul Dania Binte Mohd Rizal    ||  2002538
 
 # Description
 
