@@ -7,14 +7,17 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "serve": "webpack serve",
-    "start": "webpack serve --opennpm "
+    "start": "WATCHPACK_POLLING=true webpack serve --hot"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "babylonjs": "^5.43.0",
-    "babylonjs-gui": "^5.43.0"
+    "babylonjs-gui": "^5.43.0",
+    "babylonjs-loaders": "^5.50.1",
+    "babylonjs-materials": "^5.50.1"
+
   },
   "devDependencies": {
     "copy-webpack-plugin": "^11.0.0",

@@ -1,4 +1,5 @@
 import { Engine, Mesh, Scene, WebXRDefaultExperience, WebXRFeaturesManager } from "babylonjs";
+import "babylonjs-loaders";
 export declare class App {
     private engine;
     private canvas;

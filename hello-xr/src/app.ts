@@ -1,5 +1,6 @@
 import {
   ActionManager,
+  BabylonFileLoaderConfiguration,
   Color4,
   Engine,
   HtmlElementTexture,
@@ -19,16 +20,33 @@ import {
 } from "babylonjs";
 import { AdvancedDynamicTexture, TextBlock } from "babylonjs-gui";
 import { Text, Spheres, Audio, Cubes, Models, Particles } from "../components";
+import {EntityComponentSystem} from "./ecs"
+
 import "babylonjs-loaders";
 
 export class App {
   private engine: Engine;
   private canvas: HTMLCanvasElement;
+  private ecs: EntityComponentSystem;
 
   constructor(engine: Engine, canvas: HTMLCanvasElement) {
     this.engine = engine;
     this.canvas = canvas;
+
+    
+
     console.log("app is running");
+  }
+
+  /**
+   * 
+   * @param scene Update loop for the game.
+   */
+  Update(scene : Scene)
+  {
+    scene.registerBeforeRender(function () {
+      //Do all Game Based Updates here!
+    })
   }
 
   async createXRScene(canvasID: string) {
@@ -36,6 +54,9 @@ export class App {
 
     const scene = new Scene(this.engine);
     scene.actionManager = new ActionManager(scene);
+
+    this.ecs = new EntityComponentSystem(scene);
+    
 
     scene.createDefaultCameraOrLight(false, true, true);
 
@@ -83,6 +104,8 @@ export class App {
       console.log("Model loaded!");
     });
 
+    
+
     //for the XR/VR experience
     const xr = await scene.createDefaultXRExperienceAsync({
       uiOptions: {
@@ -124,6 +147,8 @@ export class App {
 
     //enabled features
     console.log(featureManager.getEnabledFeatures());
+
+    this.Update(scene); //This is where all game loop stuff happens
 
     return scene;
   } //END OF CREATE XR SCENE
@@ -186,6 +211,8 @@ export class App {
         );
         break;
     }
+
+    
   }
 } //END OF EXPORT CLASS
 

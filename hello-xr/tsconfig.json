@@ -9,16 +9,20 @@
         "sourceMap": true,
         "experimentalDecorators": true,
         "isolatedModules": false,
+        "downlevelIteration": true,
         "lib": [
             "dom",
             "es2015.promise",
-            "es5"
+            "es2015",
+            "es5",
+            "ESNext"
         ],
         "declaration": true,
         "outDir": "./src",
         "types": [
             "babylonjs",
-            "babylonjs-gui"
+            "babylonjs-gui",
+            "babylonjs-materials"
         ]
     },
     "files": [
