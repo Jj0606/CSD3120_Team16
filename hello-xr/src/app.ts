@@ -20,7 +20,7 @@ import {
 } from "babylonjs";
 import { AdvancedDynamicTexture, TextBlock } from "babylonjs-gui";
 import { Text, Spheres, Audio, Cubes, Models, Particles } from "../components";
-import {EntityComponentSystem} from "./ecs"
+import {EntityComponentSystem} from "./ecs2"
 
 import "babylonjs-loaders";
 
@@ -39,8 +39,8 @@ export class App {
   }
 
   /**
-   * 
-   * @param scene Update loop for the game.
+   * Update loop for the game.
+   * @param scene
    */
   Update(scene : Scene)
   {
@@ -55,7 +55,16 @@ export class App {
     const scene = new Scene(this.engine);
     scene.actionManager = new ActionManager(scene);
 
-    this.ecs = new EntityComponentSystem(scene);
+    /**
+     * Testing new Entity Component System
+     */
+
+    this.ecs = new EntityComponentSystem();
+    this.ecs.RegisterComponent<Cubes>();
+    this.ecs.AddComponent<Cubes>(new Cubes("a cube", {size: 20}, scene), 0);
+    this.ecs.GetComponent<Cubes>(0);
+
+    
     
 
     scene.createDefaultCameraOrLight(false, true, true);

@@ -34,7 +34,7 @@ export class EntityComponentSystem
 
     public AddComponent<T>(entity: number, component: T)
     {
-        if(component instanceof Spheres)
+        if(component instanceof Cubes)
         {
             this.allMeshes[entity] = component as Meshes;
             this.SetBitset(Signatures.MESHES, entity);
@@ -47,6 +47,8 @@ export class EntityComponentSystem
             this.SetBitset(Signatures.MESHES, entity);
             console.log("Added Cube to entity: " + entity.toString());
         }
+
+        //add more else if statements as you go
         
         else
         {
@@ -55,14 +57,20 @@ export class EntityComponentSystem
         }
     }
 
-    public RemoveComponent(entity: number, component: any)
+    public RemoveComponent<T>(entity: number, component: T)
     {
         if(component instanceof Spheres)
         {
             this.allMeshes[entity] = component as Meshes;
             this.UnsetBitset(Signatures.MESHES, entity);
         }
+        else if(component instanceof Cubes)
+        {
+            this.allMeshes[entity] = component as Meshes;
+            this.UnsetBitset(Signatures.MESHES, entity);
+        }
         
+        //add more if else statements as you go
         else
         {
             console.log("Component type not found! Did you register beforehand?");
