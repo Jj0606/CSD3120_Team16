@@ -7,6 +7,7 @@ import {
   Mesh,
   MeshBuilder,
   PointerDragBehavior,
+  PositionGizmo,
   Scene,
   StandardMaterial,
   Texture,
@@ -62,7 +63,7 @@ export class App {
     this.ecs = new EntityComponentSystem();
     this.ecs.RegisterComponent<Cubes>();
     this.ecs.AddComponent<Cubes>(new Cubes("a cube", {size: 20}, scene), 0);
-    this.ecs.GetComponent<Cubes>(0);
+    this.ecs.GetComponent<Cubes>(0).position.set(20,0,0);
 
     
     

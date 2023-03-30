@@ -3,16 +3,15 @@ import { Text, Spheres, Audio, Cubes, Models, Particles, Meshes } from "../compo
 
 type Entity = number;
 
-
-
 export class EntityComponentSystem
 {
-    maxEntities = 2000;
+    maxEntities = 200;
     maxComponents = 32;
 
     arrayOfComponentArrays: ComponentArray[] = new Array(this.maxComponents);
-    entityBitSets: Uint32Array = new Uint32Array(this.maxEntities);
-    componentBitSets: Uint32Array = new Uint32Array(this.maxComponents);
+    entityBitSets: Uint32Array = new Uint32Array(this.maxEntities).fill(0);
+
+    componentBitSets: Uint32Array = new Uint32Array(this.maxComponents).fill(0);
 
     numberOfComponents = 0;
 
@@ -23,6 +22,22 @@ export class EntityComponentSystem
         let thisComponentArray = new IComponentArray<T>(this.maxEntities) as ComponentArray;
         this.arrayOfComponentArrays[this.numberOfComponents] = thisComponentArray;
         this.numberOfComponents++;
+        
+    }
+
+    MakeEntity(): Entity
+    {
+        //goes through entity list and finds an entity with bitset all 0. 
+        //if it has no components, its not doing anything and is free to be used.
+        for(let i = 0; i < this.entityBitSets.length; i++)
+        {
+            if(this.entityBitSets[i] == 0)
+            {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     AddComponent<T>(component: T, entity: Entity)
