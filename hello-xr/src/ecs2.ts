@@ -13,6 +13,7 @@ export class EntityComponentSystem
 
     componentBitSets: Uint32Array = new Uint32Array(this.maxComponents).fill(0);
 
+
     numberOfComponents = 0;
 
     RegisterComponent<T>()
@@ -22,7 +23,8 @@ export class EntityComponentSystem
         let thisComponentArray = new IComponentArray<T>(this.maxEntities) as ComponentArray;
         this.arrayOfComponentArrays[this.numberOfComponents] = thisComponentArray;
         this.numberOfComponents++;
-        
+        //I don't know how to get the name of T, so that I can assign a bitset...
+        let type = (typeof T).name;
     }
 
     MakeEntity(): Entity
@@ -33,6 +35,7 @@ export class EntityComponentSystem
         {
             if(this.entityBitSets[i] == 0)
             {
+                console.log("Entity " + i + " created!")
                 return i;
             }
         }
@@ -62,6 +65,7 @@ export class EntityComponentSystem
                 return this.arrayOfComponentArrays[i][entity] as T;
             }
         }
+        throw new Error("Component not found!");
     }
 }
 

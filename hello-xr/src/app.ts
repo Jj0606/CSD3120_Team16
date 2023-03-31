@@ -62,8 +62,10 @@ export class App {
 
     this.ecs = new EntityComponentSystem();
     this.ecs.RegisterComponent<Cubes>();
-    this.ecs.AddComponent<Cubes>(new Cubes("a cube", {size: 20}, scene), 0);
-    this.ecs.GetComponent<Cubes>(0).position.set(20,0,0);
+
+    let entity = this.ecs.MakeEntity();
+    this.ecs.AddComponent<Cubes>(new Cubes("a cube", {size: 20}, scene), entity);
+    this.ecs.GetComponent<Cubes>(entity).position.set(20,0,0);
 
     
     
