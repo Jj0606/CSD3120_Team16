@@ -12,19 +12,24 @@ export class EntityComponentSystem
     entityBitSets: Uint32Array = new Uint32Array(this.maxEntities).fill(0);
 
     componentBitSets: Uint32Array = new Uint32Array(this.maxComponents).fill(0);
-
+    mapComponentToBitset: Map<string, number> = new Map();
 
     numberOfComponents = 0;
 
-    RegisterComponent<T>()
+    
+    RegisterComponent<T>(componentName: string) 
     {
         //Create new component array of type T and push into array of Component Arrays
         //might need to cast
         let thisComponentArray = new IComponentArray<T>(this.maxEntities) as ComponentArray;
         this.arrayOfComponentArrays[this.numberOfComponents] = thisComponentArray;
-        this.numberOfComponents++;
+        
         //I don't know how to get the name of T, so that I can assign a bitset...
-        let type = (typeof T).name;
+        //so we will force yall to type in the name for us
+        let signature = 1 << this.numberOfComponents;
+        this.mapComponentToBitset.set(componentName, signature);
+        console.log("Registered Component " + componentName + ": Bitset " + signature);
+        this.numberOfComponents++;
     }
 
     MakeEntity(): Entity
@@ -43,7 +48,7 @@ export class EntityComponentSystem
         return -1;
     }
 
-    AddComponent<T>(component: T, entity: Entity)
+    AddComponent<T>(component: T, componentName: string, entity: Entity)
     {   
         for(let i = 0; i < this.arrayOfComponentArrays.length; ++i)
         {
@@ -51,8 +56,23 @@ export class EntityComponentSystem
             {
                 console.log("Added Component to Entity " + entity);
                 this.arrayOfComponentArrays[i][entity] = component; //might fail here
+                this.entityBitSets[entity] |= this.mapComponentToBitset[componentName];
             }
         }
+    }
+
+    HasComponent<T>(componentName: string, entity: Entity) : boolean
+    {
+        let entitySignature = this.entityBitSets[entity];
+        if(entitySignature & this.mapComponentToBitset[componentName])
+        {
+            console.log("Entity " + entity + "has component " + componentName);
+            return true;
+        }
+
+        console.log("Component not found!");
+
+        return false;
     }
 
     GetComponent<T>(entity: Entity) : T
