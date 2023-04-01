@@ -21,7 +21,7 @@ import {
 } from "babylonjs";
 import { AdvancedDynamicTexture, TextBlock } from "babylonjs-gui";
 import { Text, Spheres, Audio, Cubes, Models, Particles } from "../components";
-import {EntityComponentSystem} from "./ecs2"
+import {EntityComponentSystem} from "./ecs"
 
 import "babylonjs-loaders";
 
@@ -59,18 +59,15 @@ export class App {
     /**
      * Testing new Entity Component System
      */
-
     this.ecs = new EntityComponentSystem();
     this.ecs.RegisterComponent<Cubes>("Cubes");
+    this.ecs.RegisterComponent<Models>("Models");
+    this.ecs.RegisterComponent<Particles>("Particles");
 
     let entity = this.ecs.MakeEntity();
-    this.ecs.AddComponent<Cubes>(new Cubes("a cube", {size: 20}, scene), "Cube", entity);
-    this.ecs.HasComponent<Cubes>("Cubes", entity);
-    this.ecs.GetComponent<Cubes>(entity).position.set(20,0,0);
-
-
-    
-    
+    this.ecs.AddComponent<Cubes>("Cubes", new Cubes("a cube", {size: 20}, scene), entity);
+    this.ecs.HasComponent("Cubes", entity);
+    this.ecs.GetComponent<Cubes>("Cubes", entity).position.set(20,0,0);
 
     scene.createDefaultCameraOrLight(false, true, true);
 

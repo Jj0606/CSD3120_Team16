@@ -1,118 +1,195 @@
 import { Scene, Texture, Vector3 } from "babylonjs";
 import { Text, Spheres, Audio, Cubes, Models, Particles, Meshes } from "../components";
 
-export class EntityComponentSystem
-{
-    maxEntities: number = 2000;
+type Entity = number;
 
-    //Add ur component arrays here! Rmb to add a signature for components to enum Signatures!
-    allMeshes: Meshes[] = new Array(this.maxEntities);
-    allModels: Models[] = new Array(this.maxEntities);
-    allParticles: Particles[] = new Array(this.maxEntities);
-    allAudio: Audio[] = new Array(this.maxEntities);
-    allText: Text[] = new Array(this.maxEntities);
-    allTextures: Texture[] = new Array(this.maxEntities);
+export class EntityComponentSystem {
+    maxEntities = 200;
+    maxComponents = 32;
 
-    entities: boolean[] = new Array(this.maxEntities); //this represents available entities
-    allbitsets: Uint16Array = new Uint16Array(this.maxEntities); //this is bitset per entity
 
-    //Scene
-    scene : Scene;
+    arrayOfComponentArrays: ComponentArray[] = new Array(this.maxComponents);
+    entityBitSets: Uint32Array = new Uint32Array(this.maxEntities).fill(0);
 
-    constructor(scene: Scene)
+    componentBitSets: Uint32Array = new Uint32Array(this.maxComponents).fill(0);
+    mapComponentToBitset: Map<string, number> = new Map();
+
+    numberOfComponents = 0;
+
+    constructor()
     {
-        this.scene = scene;
-        
-        for(let i = 0; i < this.maxEntities; i++)
-        {
-            this.entities[i] = false;
-        }
-
-        this.InitAllObjects(this.scene);
+        //this.maxEntities = maxEntities;
     }
 
+    /**
+     * Registers component for use in ECS in map of Component name to Bitset.
+     * 
+     * (Key -> Value)
+     * Mesh  -> 0b0001
+     * Cubes -> 0b0010
+     * 
+     * @param componentName Must be the same name as T, unless u want to be special and stick
+     *                      with this name.
+     */
+    RegisterComponent<T>(componentName: string) {
+        //Create new component array of type T and push into array of Component Arrays
+        //might need to cast
+        let thisComponentArray = new IComponentArray<T>(this.maxEntities) as ComponentArray;
+        this.arrayOfComponentArrays[this.numberOfComponents] = thisComponentArray;
 
-    public AddComponent<T>(entity: number, component: T)
-    {
-        if(component instanceof Cubes)
-        {
-            this.allMeshes[entity] = component as Meshes;
-            this.SetBitset(Signatures.MESHES, entity);
-            console.log("Added Sphere to entity: " + entity.toString());
-        }
-
-        else if(component instanceof Cubes)
-        {
-            this.allMeshes[entity] = component as Meshes;
-            this.SetBitset(Signatures.MESHES, entity);
-            console.log("Added Cube to entity: " + entity.toString());
-        }
-
-        //add more else if statements as you go
-        
-        else
-        {
-            console.log("Component type not found! Did you register beforehand?");
-            //throw new Error("Component type not found! Did you register beforehand?");
-        }
+        //I don't know how to get the name of T, so that I can assign a bitset...
+        //so we will force yall to type in the name for us
+        //so that I can create a map of component Names to their bitsets
+        /**
+         *  (Key -> Value)
+         *  Mesh  -> 0b0001
+         *  Cubes -> 0b0010
+         *  and so onD
+         */
+        let signature = 1 << this.numberOfComponents;
+        this.mapComponentToBitset.set(componentName, signature);
+        console.log("Registered Component " + componentName + ": Bitset " + this.mapComponentToBitset.get(componentName));
+        this.numberOfComponents++;
     }
 
-    public RemoveComponent<T>(entity: number, component: T)
-    {
-        if(component instanceof Spheres)
-        {
-            this.allMeshes[entity] = component as Meshes;
-            this.UnsetBitset(Signatures.MESHES, entity);
-        }
-        else if(component instanceof Cubes)
-        {
-            this.allMeshes[entity] = component as Meshes;
-            this.UnsetBitset(Signatures.MESHES, entity);
-        }
-        
-        //add more if else statements as you go
-        else
-        {
-            console.log("Component type not found! Did you register beforehand?");
-            //throw new Error("Component type not found! Did you register beforehand?");
-        }
-    }
-
-    SetBitset(signature: Signatures, entity: number)
-    {
-        this.allbitsets[entity] |= signature;
-    }
-
-    UnsetBitset(signature: Signatures, entity: number)
-    {
-        this.allbitsets[entity] &= signature;
-    }
-
-    public MakeEntity() : number
-    {
-        for(let i = 0; i < this.maxEntities; ++i)
-        {
-            if(this.entities[i] == false)
-            {
-                this.entities[i] = true;
+    /**
+     * Makes Entity and returns the closest available entity
+     * @returns An entity
+     */
+    MakeEntity(): Entity {
+        //goes through entity list and finds an entity with bitset all 0. 
+        //if it has no components, its not doing anything and is free to be used.
+        for (let i = 0; i < this.entityBitSets.length; i++) {
+            if (this.entityBitSets[i] == 0) {
+                console.log("Entity " + i + " created!")
                 return i;
             }
         }
 
-        throw new Error("Max Entities of 2000 Reached!");
+        return -1;
     }
 
-    InitAllObjects(scene: Scene)
-    {
-        var testmesh = this.MakeEntity();
-        this.AddComponent<Cubes>(testmesh, new Cubes("testcube1", { size: 1.0 }, scene));
+    /**
+     * Add Component to Entity
+     * @param componentName Must be same as T!!!
+     * @param component Component you want to add
+     * @param entity Entity you want to add to component
+     */
+    AddComponent<T>(componentName: string, component: T, entity: Entity) {
+        for (let i = 0; i < this.arrayOfComponentArrays.length; ++i) {
+            if (this.arrayOfComponentArrays[i] instanceof IComponentArray<T>) {
+                let newentitysignature = this.entityBitSets[entity] | this.mapComponentToBitset.get(componentName);
+                this.entityBitSets[entity] = newentitysignature; //update entity signature
+                this.arrayOfComponentArrays[i][entity] = component; //might fail here
+                console.log("Added Component to Entity " + entity + ", Bitset ", + this.entityBitSets[entity]);
+            }
+        }
     }
 
+    /**
+     * Check if a given entity has component
+     * @param componentName Name of the component type. If you registered with the same name, you
+     *                      shouldnt have a problem!
+     * @param entity Entity to check
+     * @returns True if Entity has component, else False
+     */
+    HasComponent(componentName: string, entity: Entity): boolean {
+        let entitySignature = this.entityBitSets[entity];
+        /**
+         *   01000110 -> Entity Bitset
+         * & 01000000 -> Component Bitset
+         * = 01000000 -> if is a number, true, return component
+         *  
+         */
+        let entityBitset = this.entityBitSets[entity]
+        let componentBitSet = this.mapComponentToBitset.get(componentName);
+        let result = entityBitset & componentBitSet;
+        if (result) {
+            console.log("Entity " + entity + " has component " + componentName);
+            return true;
+        }
+
+        console.log("Component not found!");
+        return false;
+    }
+
+    /**
+     * Gets the Component to add to
+     * @param componentName 
+     * @param entity 
+     * @returns 
+     */
+    GetComponent<T>(componentName: string, entity: Entity): T {
+        for (let i = 0; i < this.arrayOfComponentArrays.length; ++i) {
+            if (this.arrayOfComponentArrays[i] instanceof IComponentArray<T>) {
+                /**
+                 *   01000110 -> Entity Bitset
+                 * & 01000000 -> Component Bitset
+                 * = 01000000 -> if is a number, true, return component
+                 *  
+                 */
+                let entityBitset = this.entityBitSets[entity]
+                let componentBitSet = this.mapComponentToBitset.get(componentName);
+                let result = entityBitset & componentBitSet;
+
+                if (result) {
+                    console.log("Retrieving Component of Entity " + entity);
+                    return this.arrayOfComponentArrays[i][entity] as T;
+                }
+                else {
+                    throw new Error("Component not in entity!");
+                }
+            }
+
+        }
+        throw new Error("Component not registered!");
+    }
+
+    /**
+     * Clones Entity by Entity
+     * @param entity Entity you want to clone
+     * @returns 
+     */
+    CloneEntity(entity: Entity): Entity {
+        if (this.entityBitSets[entity] == 0) {
+            console.log("Entity " + entity + " is empty!");
+            return;
+        }
+
+        let clone = this.MakeEntity();
+        this.entityBitSets[clone] = this.entityBitSets[entity];
+
+        for (let i = 0; i < this.numberOfComponents; ++i) {
+
+        }
+    }
 }
 
 
-enum Signatures{
-    MESHES =    0b0000000000000001,
-    PARTICLES = 0b0000000000000010
+/**
+ * Base Class Component Array to push into generic Array of ComponentArrays
+ */
+class ComponentArray {
+
+}
+
+/**
+ * Derived Class Component Array that holds the array of specific component data.
+ */
+class IComponentArray<T> extends ComponentArray {
+    public array: T[];
+
+    constructor(maxEntities: Entity) {
+        super();
+        this.array = new Array(maxEntities);
+    }
+}
+
+/**
+ * Name Component
+ */
+class Name
+{
+    name : string;
 }
 
