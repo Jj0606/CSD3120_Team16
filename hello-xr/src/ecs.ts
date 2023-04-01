@@ -10,14 +10,13 @@ export class EntityComponentSystem {
 
     arrayOfComponentArrays: ComponentArray[] = new Array(this.maxComponents);
     entityBitSets: Uint32Array = new Uint32Array(this.maxEntities).fill(0);
-
+    entityNames: string[] = new Array(this.maxEntities).fill(0);
     componentBitSets: Uint32Array = new Uint32Array(this.maxComponents).fill(0);
     mapComponentToBitset: Map<string, number> = new Map();
 
     numberOfComponents = 0;
 
-    constructor()
-    {
+    constructor() {
         //this.maxEntities = maxEntities;
     }
 
@@ -56,12 +55,13 @@ export class EntityComponentSystem {
      * Makes Entity and returns the closest available entity
      * @returns An entity
      */
-    MakeEntity(): Entity {
+    MakeEntity(name: string): Entity {
         //goes through entity list and finds an entity with bitset all 0. 
         //if it has no components, its not doing anything and is free to be used.
         for (let i = 0; i < this.entityBitSets.length; i++) {
             if (this.entityBitSets[i] == 0) {
                 console.log("Entity " + i + " created!")
+                this.entityNames[i] = name;
                 return i;
             }
         }
@@ -78,6 +78,12 @@ export class EntityComponentSystem {
     AddComponent<T>(componentName: string, component: T, entity: Entity) {
         for (let i = 0; i < this.arrayOfComponentArrays.length; ++i) {
             if (this.arrayOfComponentArrays[i] instanceof IComponentArray<T>) {
+                /**
+                 *    01000110 -> Entity Bitset
+                 * or 00000000 -> Component Bitset
+                 * =  01000110 -> New Entity Bitset
+                 *  
+                 */
                 let newentitysignature = this.entityBitSets[entity] | this.mapComponentToBitset.get(componentName);
                 this.entityBitSets[entity] = newentitysignature; //update entity signature
                 this.arrayOfComponentArrays[i][entity] = component; //might fail here
@@ -140,7 +146,6 @@ export class EntityComponentSystem {
                     throw new Error("Component not in entity!");
                 }
             }
-
         }
         throw new Error("Component not registered!");
     }
@@ -156,14 +161,27 @@ export class EntityComponentSystem {
             return;
         }
 
-        let clone = this.MakeEntity();
+        let name = this.entityNames[entity];
+        let clone = this.MakeEntity(name + "Clone");
+
         this.entityBitSets[clone] = this.entityBitSets[entity];
 
-        for (let i = 0; i < this.numberOfComponents; ++i) {
+        for (let i = 0; i < this.arrayOfComponentArrays.length; ++i) {
+            let compArray = this.arrayOfComponentArrays.at(i);
 
+            //let cloneComp = compArray.GetData(clone);
+
+            // let entityComp = compArray.GetData(entity);
+            // cloneComp = entityComp;
         }
     }
+
+    //     GetComponentArray<T>() : IComponentArray<T>
+    //     {
+
+    //     }
 }
+
 
 
 /**
@@ -171,6 +189,10 @@ export class EntityComponentSystem {
  */
 class ComponentArray {
 
+    GetData(index: number): any
+    {
+        console.log("Parent method");
+    }
 }
 
 /**
@@ -183,13 +205,19 @@ class IComponentArray<T> extends ComponentArray {
         super();
         this.array = new Array(maxEntities);
     }
+
+    override GetData(index: number): T{
+        console.log("Child method");
+        let data = this.array[index];
+        return data;
+    }
+
 }
 
 /**
  * Name Component
  */
-class Name
-{
-    name : string;
+class Name {
+    name: string;
 }
 
