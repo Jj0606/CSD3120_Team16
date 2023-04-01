@@ -1,4 +1,4 @@
-import { Scene, Texture, Vector3 } from "babylonjs";
+import { CompareFunction, Scene, Texture, Vector3 } from "babylonjs";
 import { Text, Spheres, Audio, Cubes, Models, Particles, Meshes } from "../components";
 
 type Entity = number;
@@ -10,7 +10,7 @@ export class EntityComponentSystem {
 
     arrayOfComponentArrays: ComponentArray[] = new Array(this.maxComponents);
     entityBitSets: Uint32Array = new Uint32Array(this.maxEntities).fill(0);
-    entityNames: string[] = new Array(this.maxEntities).fill(0);
+    entityNames: string[] = new Array(this.maxEntities);
     componentBitSets: Uint32Array = new Uint32Array(this.maxComponents).fill(0);
     mapComponentToBitset: Map<string, number> = new Map();
 
@@ -60,7 +60,7 @@ export class EntityComponentSystem {
         //if it has no components, its not doing anything and is free to be used.
         for (let i = 0; i < this.entityBitSets.length; i++) {
             if (this.entityBitSets[i] == 0) {
-                console.log("Entity " + i + " created!")
+                console.log("Entity " + i + " created with name " + name +  "!");
                 this.entityNames[i] = name;
                 return i;
             }
@@ -107,8 +107,11 @@ export class EntityComponentSystem {
          * = 01000000 -> if is a number, true, return component
          *  
          */
-        let entityBitset = this.entityBitSets[entity]
+        let entityBitset = this.entityBitSets[entity];
         let componentBitSet = this.mapComponentToBitset.get(componentName);
+
+        console.log("Entity Bitset: " + entityBitset + " Component Bitset: " + componentBitSet);
+
         let result = entityBitset & componentBitSet;
         if (result) {
             console.log("Entity " + entity + " has component " + componentName);
@@ -139,8 +142,9 @@ export class EntityComponentSystem {
                 let result = entityBitset & componentBitSet;
 
                 if (result) {
-                    console.log("Retrieving Component of Entity " + entity);
-                    return this.arrayOfComponentArrays[i][entity] as T;
+                    let component = this.arrayOfComponentArrays[i][entity] as T;
+                    console.log("Retrieving Component: {" + component.toString() +  "} of Entity " + entity);
+                    return component;
                 }
                 else {
                     throw new Error("Component not in entity!");
@@ -150,36 +154,51 @@ export class EntityComponentSystem {
         throw new Error("Component not registered!");
     }
 
-    /**
-     * Clones Entity by Entity
-     * @param entity Entity you want to clone
-     * @returns 
-     */
-    CloneEntity(entity: Entity): Entity {
-        if (this.entityBitSets[entity] == 0) {
-            console.log("Entity " + entity + " is empty!");
-            return;
-        }
-
-        let name = this.entityNames[entity];
-        let clone = this.MakeEntity(name + "Clone");
-
-        this.entityBitSets[clone] = this.entityBitSets[entity];
-
-        for (let i = 0; i < this.arrayOfComponentArrays.length; ++i) {
-            let compArray = this.arrayOfComponentArrays.at(i);
-
-            //let cloneComp = compArray.GetData(clone);
-
-            // let entityComp = compArray.GetData(entity);
-            // cloneComp = entityComp;
-        }
+    GetEntitiesBasedOnBitSet()
+    {
+        
     }
 
-    //     GetComponentArray<T>() : IComponentArray<T>
-    //     {
-
+    // /**
+    //  * Clones Entity by Entity. DOES NOT WORK!
+    //  * @param entity Entity you want to clone
+    //  * @returns 
+    //  */
+    // CloneEntity(entity: Entity): Entity {
+    //     if (this.entityBitSets[entity] == 0) {
+    //         console.log("Entity " + entity + " is empty!");
+    //         return;
     //     }
+
+    //     let name = this.entityNames[entity];
+    //     let clone = this.MakeEntity(name + " Clone");
+
+    //     this.entityBitSets[clone] = this.entityBitSets[entity];
+
+    //     for (let i = 0; i < this.numberOfComponents - 1; ++i) {
+
+    //         console.log("Entity Bitset: " + this.entityBitSets[entity].toString() +" ComponentBitset: " + (1 << i).toString());
+
+    //         if (this.entityBitSets[entity] & (1 << i)) {
+    //             let compArray = this.arrayOfComponentArrays[i];
+    //             let cloneComponent = compArray.GetData(clone);
+    //             let entityComponent = compArray.GetData(entity);
+    //             let copy = structuredClone(entityComponent);
+    //             console.log("Cloned Component: " + copy.toString());
+    //             cloneComponent = copy;
+    //         }
+    //         else{
+    //             console.log("Entity " + entity + " does not have component " + i);
+    //         }
+    //     }
+
+    //     this.entityBitSets[clone] = structuredClone(this.entityBitSets[entity]);
+
+    //     console.log("Entity Bitset: " + this.entityBitSets[entity] + " Clone Bitset: " + this.entityBitSets[clone] );
+
+    //     return clone;
+    // }
+
 }
 
 
@@ -189,8 +208,7 @@ export class EntityComponentSystem {
  */
 class ComponentArray {
 
-    GetData(index: number): any
-    {
+    GetData(index: number): any {
         console.log("Parent method");
     }
 }
@@ -206,7 +224,7 @@ class IComponentArray<T> extends ComponentArray {
         this.array = new Array(maxEntities);
     }
 
-    override GetData(index: number): T{
+    override GetData(index: number): T {
         console.log("Child method");
         let data = this.array[index];
         return data;

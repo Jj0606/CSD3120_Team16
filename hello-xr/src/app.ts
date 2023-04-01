@@ -69,8 +69,7 @@ export class App {
     this.ecs.HasComponent("Cubes", entity);
     this.ecs.GetComponent<Cubes>("Cubes", entity).position.set(20,0,0);
 
-    let clone = this.ecs.CloneEntity(entity);
-    this.ecs.HasComponent("Cubes", clone);
+    
 
     scene.createDefaultCameraOrLight(false, true, true);
 
