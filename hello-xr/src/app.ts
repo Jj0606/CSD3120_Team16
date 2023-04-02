@@ -186,6 +186,11 @@ export class App {
         ) as WebXRMotionControllerTeleportation;
         teleportation.parabolicRayEnabled = true;
         teleportation.parabolicCheckRadius = 2;
+        for (const mesh of scene.meshes) {
+          if (mesh.name !== "ground") {
+            teleportation.addBlockerMesh(mesh)
+          }
+      }
         break;
       case movementMode.Controller:
         console.log("movement mode: Controller");
