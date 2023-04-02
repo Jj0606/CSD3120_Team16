@@ -10,7 +10,7 @@ export class Controller
     ecs : EntityComponentSystem;
     scene : Scene;
     
-    contructor()
+    contructor(ecs: EntityComponentSystem, scene: Scene)
     {  
        
     }

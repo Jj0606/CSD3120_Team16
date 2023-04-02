@@ -6,6 +6,13 @@ import { EntityComponentSystem } from "../src/ecs";
 export class Behaviour
 {
     ecs : EntityComponentSystem;
+    entity: number;
+
+    constructor(ecs: EntityComponentSystem, entity: number)
+    {
+        this.ecs = ecs;
+        this.entity = entity;
+    }
 
     Init()
     {
