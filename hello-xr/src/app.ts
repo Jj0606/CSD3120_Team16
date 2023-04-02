@@ -17,7 +17,7 @@ import {
   WebXRFeaturesManager,
   WebXRMotionControllerTeleportation,
 } from "babylonjs";
-import { AdvancedDynamicTexture, TextBlock } from "babylonjs-gui";
+import { AdvancedDynamicTexture, TextBlock, } from "babylonjs-gui";
 import { Text, Spheres, Audio, Cubes, Models, Particles } from "../components";
 import "babylonjs-loaders";
 
@@ -52,37 +52,47 @@ export class App {
       50,
       scene
     );
-    new Spheres("testsphere", { diameter: 1.0 }, scene, testText);
-    var testcube = new Cubes("testcube", { size: 1.0 }, scene);
-    testcube.position.set(3, 0, 0);
+    // new Spheres("testsphere", { diameter: 1.0 }, scene, testText);
+    // var testcube = new Cubes("testcube", { size: 1.0 }, scene);
+    // testcube.position.set(3, 0, 0);
 
     const testAudio = new Audio(scene);
     testAudio.createBGM("audio/8bit.mp3");
     testAudio.BGM.setVolume(0.3);
 
     const testmodels = new Models("testmodels", scene);
-    testmodels.loadModels("H2.glb", () => {
+    testmodels.loadModels("bomb.glb", () => {
       //ADD BEHAVIOURS HERE
       const h20modelGrab = new PointerDragBehavior({
         dragPlaneNormal: Vector3.Backward(),
       });
       testmodels.mesh.addBehavior(h20modelGrab);
-      new Particles(
-        testmodels.mesh.position,
-        new Color4(0.7, 0.8, 1.0, 1.0),
-        new Color4(0.3, 0.5, 1.0, 1.0),
-        new Vector2(0.01, 0.05),
-        new Vector2(0.3, 1.5),
-        1500,
-        new Vector3(-1, 8, 1),
-        new Vector3(1, 8, -1),
-        new Vector2(0.2, 0.8),
-        0.01,
-        scene
-      );
       console.log("Model loaded!");
     });
+    testmodels.loadModels("apple.glb", () => {
+      //ADD BEHAVIOURS HERE
+      const h20modelGrab = new PointerDragBehavior({
+        dragPlaneNormal: Vector3.Backward(),
+      });
+      testmodels.mesh.addBehavior(h20modelGrab);
 
+    });
+    testmodels.loadModels("banana.glb", () => {
+      //ADD BEHAVIOURS HERE
+      const h20modelGrab = new PointerDragBehavior({
+        dragPlaneNormal: Vector3.Backward(),
+      });
+      testmodels.mesh.addBehavior(h20modelGrab);
+
+    });
+    testmodels.loadModels("orange.glb", () => {
+      //ADD BEHAVIOURS HERE
+      const h20modelGrab = new PointerDragBehavior({
+        dragPlaneNormal: Vector3.Backward(),
+      });
+      testmodels.mesh.addBehavior(h20modelGrab);
+
+    });
     //for the XR/VR experience
     const xr = await scene.createDefaultXRExperienceAsync({
       uiOptions: {
