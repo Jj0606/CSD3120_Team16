@@ -1,11 +1,15 @@
 import {
   ActionManager,
+  Animation,
+  CannonJSPlugin,
   Color4,
   Engine,
   HtmlElementTexture,
   Mesh,
   MeshBuilder,
+  PhysicsImpostor,
   PointerDragBehavior,
+  RandomNumberBlock,
   Scene,
   StandardMaterial,
   Texture,
@@ -38,6 +42,7 @@ export class App {
     scene.actionManager = new ActionManager(scene);
 
     scene.createDefaultCameraOrLight(false, true, true);
+    scene.activeCamera.position = new Vector3(0,0, -5)
 
     //the following are test codes for the setups, they are to be changed
     const testText = new Text(
@@ -104,6 +109,8 @@ export class App {
       dragPlaneNormal: new Vector3(0,1,0)
     })
     plate.addBehavior(plateDrag)
+    
+    spawnFruit(scene, testmodels)
 
     //for the XR/VR experience
     const xr = await scene.createDefaultXRExperienceAsync({
@@ -126,6 +133,16 @@ export class App {
     );
     ground.material = groundMaterial;
     ground.position.set(0, -5, 8);
+
+    scene.registerBeforeRender( () => {
+      const delta = scene.deltaTime | 0
+      for (let mesh of scene.meshes) {
+        if (mesh.name == "New Fruit" && !mesh.parent) {
+          mesh.position.y -= 3.0 * delta / 1000
+          //console.log(scene.deltaTime)
+        }
+      }
+    })
 
     //locomotion
     const movement = movementMode.Teleportation;
@@ -224,4 +241,21 @@ enum movementMode {
   Teleportation,
   Controller,
   Walk,
+}
+
+function spawnFruit(scene: Scene, models : Models) {
+  const fruitArray = Array("apple.glb", "banana.glb", "orange.glb")
+
+  const fruitType = Math.floor(Math.random() * 3)
+  const fruitName = fruitArray[fruitType]
+  models.loadModels(fruitName, () => {
+    //ADD BEHAVIOURS HERE
+    models.mesh.name = "New Fruit"
+    const randX = Math.random() * 10 - 5;
+    const randZ = Math.random() * 10 - 5;
+    //const randX = 0
+    //const randZ = 5
+    console.log(randX, randZ)
+    models.mesh.position = new Vector3(randX, 10, randZ)
+  });
 }
