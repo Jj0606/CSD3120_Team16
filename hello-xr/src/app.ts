@@ -24,11 +24,14 @@ import {
 import { AdvancedDynamicTexture, TextBlock, } from "babylonjs-gui";
 import { Text, Spheres, Audio, Cubes, Models, Particles } from "../components";
 import "babylonjs-loaders";
+var timer = 0;
+var intervalId;
+var timeoutId;
 
 export class App {
   private engine: Engine;
   private canvas: HTMLCanvasElement;
-
+  
   constructor(engine: Engine, canvas: HTMLCanvasElement) {
     this.engine = engine;
     this.canvas = canvas;
@@ -133,6 +136,13 @@ export class App {
     );
     ground.material = groundMaterial;
     ground.position.set(0, -5, 8);
+    
+    //TIMER STUFF HERE
+    intervalId = setInterval(function() {
+      timer++;
+      testText.textBlock.text = ("Timer: " + timer);
+      console.log("Timer: " + timer);
+    }, 1000);
 
     scene.registerBeforeRender( () => {
       const delta = scene.deltaTime | 0
@@ -144,6 +154,31 @@ export class App {
       }
     })
 
+    timeoutId = setTimeout(() => {
+      clearInterval(intervalId);
+      testText.textBlock.text = ("Times Up!");
+    }, 10000);
+ 
+  
+    window.addEventListener('keydown',e => {
+      if (e.key === 'r')
+      {
+        clearTimeout(timeoutId);
+        clearInterval(intervalId);
+        timer = 0;
+        intervalId = setInterval(function() {
+          timer++;
+          testText.textBlock.text = ("Timer: " + timer);
+          console.log("Timer: " + timer);
+        }, 1000);
+    
+        timeoutId = setTimeout(() => {
+          clearInterval(intervalId);
+          testText.textBlock.text = ("Times Up!");
+        }, 10000);
+     
+      }
+  });
     //locomotion
     const movement = movementMode.Teleportation;
     this.initLocomotion(movement, xr, featureManager, ground, scene);
@@ -232,6 +267,7 @@ export class App {
     }
   }
 } //END OF EXPORT CLASS
+
 
 /**
  * Enums for different movement
