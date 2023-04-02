@@ -93,6 +93,18 @@ export class App {
       testmodels.mesh.addBehavior(h20modelGrab);
 
     });
+
+    const plate = MeshBuilder.CreateCylinder('plate', {
+      height: 0.05,
+      diameter: 1.5
+    }, scene);
+
+    plate.position = new Vector3(0,0,0);
+    const plateDrag = new PointerDragBehavior({
+      dragPlaneNormal: new Vector3(0,1,0)
+    })
+    plate.addBehavior(plateDrag)
+
     //for the XR/VR experience
     const xr = await scene.createDefaultXRExperienceAsync({
       uiOptions: {
