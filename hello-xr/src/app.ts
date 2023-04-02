@@ -19,9 +19,11 @@ import {
   WebXRFeaturesManager,
   WebXRMotionControllerTeleportation,
 } from "babylonjs";
+
 import { AdvancedDynamicTexture, TextBlock } from "babylonjs-gui";
 import { Text, Spheres, Audio, Cubes, Models, Particles } from "../components";
-import {EntityComponentSystem} from "./ecs"
+import { EntityComponentSystem } from "./ecs"
+import { EnemyController } from "../controllers/index"
 
 import "babylonjs-loaders";
 
@@ -34,7 +36,8 @@ export class App {
     this.engine = engine;
     this.canvas = canvas;
 
-    
+
+
 
     console.log("app is running");
   }
@@ -43,8 +46,7 @@ export class App {
    * Update loop for the game.
    * @param scene
    */
-  Update(scene : Scene)
-  {
+  Update(scene: Scene) {
     scene.registerBeforeRender(function () {
       //Do all Game Based Updates here!
     })
@@ -65,11 +67,11 @@ export class App {
     this.ecs.RegisterComponent<Particles>("Particles");
 
     let entity = this.ecs.MakeEntity("Large Cube");
-    this.ecs.AddComponent<Cubes>("Cubes", new Cubes("a cube", {size: 20}, scene), entity);
+    this.ecs.AddComponent<Cubes>("Cubes", new Cubes("a cube", { size: 20 }, scene), entity);
     this.ecs.HasComponent("Cubes", entity);
-    this.ecs.GetComponent<Cubes>("Cubes", entity).position.set(20,0,0);
+    this.ecs.GetComponent<Cubes>("Cubes", entity).position.set(20, 0, 0);
 
-    
+    let enemyController = new EnemyController(this.ecs, scene, 10);
 
     scene.createDefaultCameraOrLight(false, true, true);
 
@@ -117,7 +119,7 @@ export class App {
       console.log("Model loaded!");
     });
 
-    
+
 
     //for the XR/VR experience
     const xr = await scene.createDefaultXRExperienceAsync({
@@ -225,7 +227,7 @@ export class App {
         break;
     }
 
-    
+
   }
 } //END OF EXPORT CLASS
 

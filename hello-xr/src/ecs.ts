@@ -52,8 +52,9 @@ export class EntityComponentSystem {
     }
 
     /**
-     * Makes Entity and returns the closest available entity
-     * @returns An entity
+     * Makes an entity
+     * @param name Master Name.
+     * @returns an entity
      */
     MakeEntity(name: string): Entity {
         //goes through entity list and finds an entity with bitset all 0. 
@@ -154,9 +155,44 @@ export class EntityComponentSystem {
         throw new Error("Component not registered!");
     }
 
-    GetEntitiesBasedOnBitSet()
-    {
+    GetEntitiesBasedOnSignature(signature : number) : number[]
+    {   
+        let entities : number[] = Array();
+        let systemBitset = signature;
         
+        for(let i = 0; i < this.entityBitSets.length; ++i)
+        {
+            /**
+             *      01010101 System Bitset
+             *  &   11010111 Entity Bitset
+             *  =   01010101 -> If result is same as System, Entity
+             * has all the components needed to be placed into a system.
+             * 
+             */
+            let entityBitset = this.entityBitSets[i];
+            let result = systemBitset & entityBitset;
+
+            if(result == systemBitset)
+            {
+                entities.push(i);
+            }
+        }
+        return entities;
+    }
+
+    MakeBitSet(componentNameArray : string) : number
+    {
+        let result = 0;
+        for(let i = 0; i < componentNameArray.length; ++i)
+        {
+            let retrievedBitset = this.mapComponentToBitset.get(componentNameArray[i]);
+            if(retrievedBitset === null)
+            {
+                throw new Error("Component " + componentNameArray[i] + " does not exist!")
+            }
+            result = result | retrievedBitset;
+        }
+        return result;
     }
 
     // /**
