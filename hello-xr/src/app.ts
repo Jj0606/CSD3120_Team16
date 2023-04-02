@@ -136,13 +136,6 @@ export class App {
     );
     ground.material = groundMaterial;
     ground.position.set(0, -5, 8);
-    
-    //TIMER STUFF HERE
-    intervalId = setInterval(function() {
-      timer++;
-      testText.textBlock.text = ("Timer: " + timer);
-      console.log("Timer: " + timer);
-    }, 1000);
 
     scene.registerBeforeRender( () => {
       const delta = scene.deltaTime | 0
@@ -153,7 +146,14 @@ export class App {
         }
       }
     })
+    //TIMER STUFF HERE
+    intervalId = setInterval(function() {
+      timer++;
+      testText.textBlock.text = ("Timer: " + timer);
+      console.log("Timer: " + timer);
+    }, 1000);
 
+  
     timeoutId = setTimeout(() => {
       clearInterval(intervalId);
       testText.textBlock.text = ("Times Up!");
