@@ -22,6 +22,7 @@ import {
   WebXRFeaturesManager,
   WebXRMotionControllerTeleportation,
   GizmoManager,
+  CubeTexture,
 } from "babylonjs";
 import { AdvancedDynamicTexture, TextBlock, } from "babylonjs-gui";
 import { Text, Spheres, Audio, Cubes, Models, Particles } from "../components";
@@ -63,47 +64,18 @@ export class App {
       50,
       scene
     );
-    // new Spheres("testsphere", { diameter: 1.0 }, scene, testText);
-    // var testcube = new Cubes("testcube", { size: 1.0 }, scene);
-    // testcube.position.set(3, 0, 0);
+   
 
     const testAudio = new Audio(scene);
     testAudio.createBGM("audio/8bit.mp3");
     testAudio.BGM.setVolume(0.3);
 
+    this.createSkyBox(scene);
+
     //create models
     const testmodels = new Models("testmodels", scene);
     const grab = new PointerDragBehavior({dragPlaneNormal: Vector3.Backward(),});
-    // testmodels.loadModels("bomb.glb", () => {
-    //   //ADD BEHAVIOURS HERE
-    //   const h20modelGrab = new PointerDragBehavior({
-    //     dragPlaneNormal: Vector3.Backward(),
-    //   });
-    //   testmodels.mesh.addBehavior(h20modelGrab);
-    //   console.log("Model loaded!");
-    // });
-    // testmodels.loadModels("apple.glb", () => {
-    //   //ADD BEHAVIOURS HERE
-    //   const h20modelGrab = new PointerDragBehavior({
-    //     dragPlaneNormal: Vector3.Backward(),
-    //   });
-    //   testmodels.mesh.addBehavior(h20modelGrab);
-    // });
-    // testmodels.loadModels("banana.glb", () => {
-    //   //ADD BEHAVIOURS HERE
-    //   const h20modelGrab = new PointerDragBehavior({
-    //     dragPlaneNormal: Vector3.Backward(),
-    //   });
-    //   testmodels.mesh.addBehavior(h20modelGrab);
-    // });
-    // testmodels.loadModels("orange.glb", () => {
-    //   //ADD BEHAVIOURS HERE
-    //   const h20modelGrab = new PointerDragBehavior({
-    //     dragPlaneNormal: Vector3.Backward(),
-    //   });
-    //   testmodels.mesh.addBehavior(h20modelGrab);
-    // });
-
+    
     //create plate
     const plate = MeshBuilder.CreateCylinder('plate', {
       height: 0.05,
@@ -313,6 +285,20 @@ export class App {
             gizmoManager.boundingBoxGizmoEnabled = !gizmoManager.boundingBoxGizmoEnabled;
         }
     })
+  }
+  createSkyBox(scene:Scene)
+  {
+      const skybox = MeshBuilder.CreateBox('skybox',{size:1000},scene);
+      const skyboxMaterial = new StandardMaterial('skybox-mat');
+     // console.log('skybox');
+
+     skyboxMaterial.backFaceCulling= false;
+     skyboxMaterial.reflectionTexture = new CubeTexture('textures/skybox',scene);
+     skyboxMaterial.reflectionTexture.coordinatesMode = Texture.SKYBOX_MODE;
+     skyboxMaterial.diffuseColor = new Color3(0,0,0);
+     skyboxMaterial.specularColor = new Color3(0,0,0);
+     skybox.material = skyboxMaterial;
+
   }
 } //END OF EXPORT CLASS
 
