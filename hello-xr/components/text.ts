@@ -1,3 +1,10 @@
+
+/**
+ * @file sound.ts
+ * @author [Jolyn Wong, Leonard Koh, Pho Kai Ting, Denise Goh, Yu Ching Yin]
+ * @desc Contains information for creation of Text that are loaded in when being imported in another class
+ */
+
 import { Mesh, MeshBuilder, Scene, Vector3 } from "babylonjs";
 import { AdvancedDynamicTexture, TextBlock } from "babylonjs-gui";
 

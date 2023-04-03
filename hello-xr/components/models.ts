@@ -1,4 +1,11 @@
-import { ActionManager, Color3, InterpolateValueAction, Mesh, Observable, Scene, SceneLoader, StandardMaterial, Vector3} from "babylonjs"
+
+/**
+ * @file models.ts
+ * @author [Jolyn Wong, Leonard Koh, Pho Kai Ting, Denise Goh, Yu Ching Yin]
+ * @desc Contains information for creation of Models that are loaded in when being imported in another class
+ */
+
+import { Color3, Mesh, Observable, Scene, SceneLoader, StandardMaterial} from "babylonjs"
 
 
 export interface ModelMesh {

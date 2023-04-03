@@ -1,3 +1,8 @@
+/**
+ * @file mesh.ts
+ * @author [Jolyn Wong, Leonard Koh, Pho Kai Ting, Denise Goh, Yu Ching Yin]
+ * @desc Contains information for creation of Spheres when being imported in another class
+ */
 
 import { AbstractMesh, Mesh, MeshBuilder, Observable, Scene, StandardMaterial } from "babylonjs"
 import {Text} from "./text"

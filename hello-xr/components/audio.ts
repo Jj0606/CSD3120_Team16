@@ -1,3 +1,8 @@
+/**
+ * @file sound.ts
+ * @author [Jolyn Wong, Leonard Koh, Pho Kai Ting, Denise Goh, Yu Ching Yin]
+ * @desc Contains information for creation of Sounds that are loaded in when being imported in another class
+ */
 import { Scene,Sound } from "babylonjs"
 
 export class Audio

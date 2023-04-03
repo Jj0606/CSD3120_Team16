@@ -1,3 +1,10 @@
+
+/**
+ * @file sound.ts
+ * @author [Jolyn Wong, Leonard Koh, Pho Kai Ting, Denise Goh, Yu Ching Yin]
+ * @desc Contains information for creation of Particles that are loaded in when being imported in another class
+ */
+
 import { Color4, ParticleSystem, Scene, Texture, Vector2, Vector3 } from "babylonjs"
 
 export class Particles
