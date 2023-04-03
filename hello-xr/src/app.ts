@@ -69,6 +69,11 @@ export class App {
     scene.createDefaultCameraOrLight(false, true, true);
     scene.activeCamera.position = new Vector3(0, 1, -10)
 
+    //BGM
+    const audio = new Audio(scene);
+    audio.createBGM("audio/BGM.wav");
+    audio.BGM.setVolume(0.3);
+
     //TEXT PLANES
     const scoreText = new Text(
       "Score: 0",
