@@ -382,17 +382,14 @@ function combine(scene: Scene, plate: Mesh, models: AbstractMesh, offsetY : numb
       if (models.name == "New Fruit") {
         offsetY += plate.scaling.y/4;
         const offset = new Vector3(Math.random() - 0.5, offsetY, Math.random() - 0.5);
-        // models.position = plate.position.add(offset);
         score++; // increment the score
         scoreText.text = "Score: " + score; // update the score text
-        // models.position = plate.position;
         models.parent = plate;
         models.position = offset;
-        console.log("   plate x: " + plate.position.x)
-        console.log("   fruit x: " + models.position.x + " " + models.position.y)
-        // console.log(testApple.name + " is intersecting plate");
       }
       if (models.name == "Bomb") {
+        score = 0;
+        scoreText.text = "Score: " + score; // update the score text
         for (let mesh of scene.meshes) {
           if (mesh.name == "New Fruit") {
             mesh.dispose();
