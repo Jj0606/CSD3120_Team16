@@ -1,21 +1,15 @@
 import {
   ActionManager,
-  Animation,
-  CannonJSPlugin,
   Color3,
-  Color4,
   Engine,
   HtmlElementTexture,
   Mesh,
   MeshBuilder,
-  PhysicsImpostor,
   PointerDragBehavior,
-  RandomNumberBlock,
   Scene,
   StandardMaterial,
   Texture,
   TransformNode,
-  Vector2,
   Vector3,
   WebXRDefaultExperience,
   WebXRFeatureName,
@@ -30,6 +24,7 @@ import { Text, Spheres, Audio, Cubes, Models, Particles } from "../components";
 import "babylonjs-loaders";
 var timer = 0;
 var score = 0;
+var offset = 0;
 var intervalId;
 var timeoutId;
 
@@ -91,7 +86,7 @@ export class App {
     plateMaterial.diffuseColor = new Color3(0.8, 0.53, 0);
     plate.material = plateMaterial; //apply the material to the plate mesh
     
-    //spawnFruit(scene, testmodels)
+
 
     //for the XR/VR experience
     const xr = await scene.createDefaultXRExperienceAsync({
@@ -127,11 +122,13 @@ export class App {
       }
     })
 
+    
+
     scene.registerBeforeRender( () => {
       for (let mesh of scene.meshes) {
         if (mesh.name == "New Fruit" && !mesh.parent) {
           //check for intersection then combine?
-          combine(scene, plate, mesh); ////////////////////////////////////////
+          combine(scene, plate, mesh, offset); ////////////////////////////////////////
         }
       }
     })
@@ -168,6 +165,7 @@ export class App {
         clearInterval(intervalId);
         timer = 0;
         score = 0;
+        offset = 0;
         intervalId = setInterval(function() {
           timer++;
           testText.textBlock.text = ("Timer: " + timer);
@@ -178,7 +176,8 @@ export class App {
           clearInterval(intervalId);
           testText.textBlock.text = ("Times Up!");
         }, 30000);
-     
+
+        
       }
     });
 
@@ -338,18 +337,21 @@ function spawnFruit(scene: Scene, models : Models) {
   });
 }
 
-function combine(scene: Scene, plate: Mesh, models: AbstractMesh) {
+function combine(scene: Scene, plate: Mesh, models: AbstractMesh, offsetY : number) {
   if (models) {
     const isIntersecting = models.intersectsMesh(plate, true, true);  
     if (isIntersecting) {
       // console.log(plate.position.x, models.mesh.position.x, models.mesh.position.y);
-      console.log("   plate x: " + plate.position.x)
-      console.log("   fruit x: " + models.position.x + " " + models.position.y)
-      const offsetY = plate.scaling.y/2;
+      //console.log("   plate x: " + plate.position.x)
+      //console.log("   fruit x: " + models.position.x + " " + models.position.y)
+      console.log("Offset: " + offsetY)
+      offsetY += models.scaling.y/2;
+      console.log("Offset: " + offsetY)
       const offset = new Vector3(0, offsetY, 0);
-      models.position = plate.position.add(offset);
+      //models.position = plate.position.add(offset);
       // models.position = plate.position;
       models.parent = plate;
+      models.position = offset
       // console.log(testApple.name + " is intersecting plate");
     }
   }
