@@ -133,8 +133,7 @@ export class App {
         if ((mesh.name == "New Fruit" || mesh.name == "Bomb") && !mesh.parent) {
           mesh.position.y -= 3.0 * delta / 1000
           //console.log(scene.deltaTime)
-          score++; // increment the score
-          scoreText.textBlock.text = "Score: " + score; // update the score text
+        
         }
       }
     })
@@ -144,7 +143,7 @@ export class App {
       for (let mesh of scene.meshes) {
         if ((mesh.name == "New Fruit" || mesh.name == "Bomb") && !mesh.parent) {
           //check for intersection then combine
-          combine(scene, plate, mesh, offset); 
+          combine(scene, plate, mesh, offset,scoreText.textBlock); 
         }
       }
     })
@@ -376,7 +375,7 @@ function spawnFruit(scene: Scene, models : Models) {
   });
 }
 
-function combine(scene: Scene, plate: Mesh, models: AbstractMesh, offsetY : number) {
+function combine(scene: Scene, plate: Mesh, models: AbstractMesh, offsetY : number, scoreText: TextBlock) {
   if (models) {
     const isIntersecting = models.intersectsMesh(plate, true, true);  
     if (isIntersecting) {
@@ -384,7 +383,8 @@ function combine(scene: Scene, plate: Mesh, models: AbstractMesh, offsetY : numb
         offsetY += plate.scaling.y/4;
         const offset = new Vector3(Math.random() - 0.5, offsetY, Math.random() - 0.5);
         // models.position = plate.position.add(offset);
-        
+        score++; // increment the score
+        scoreText.text = "Score: " + score; // update the score text
         // models.position = plate.position;
         models.parent = plate;
         models.position = offset;
