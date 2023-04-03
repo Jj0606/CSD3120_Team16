@@ -46,7 +46,7 @@ export class App {
     scene.actionManager = new ActionManager(scene);
 
     scene.createDefaultCameraOrLight(false, true, true);
-    scene.activeCamera.position = new Vector3(0, 1, -8)
+    scene.activeCamera.position = new Vector3(0, 1, -10)
 
     const scoreText = new Text(
       "Score: 0",
@@ -54,7 +54,7 @@ export class App {
       0.2,
       450,
       100,
-      new Vector3(0, 1, 1),
+      new Vector3(0, 1, 0),
       "transparent",
       "black",
       50,
@@ -66,7 +66,7 @@ export class App {
       1,
       450,
       450,
-      new Vector3(0, 1.5, 1),
+      new Vector3(0, 1.5, 0),
       "transparent",
       "cyan",
       100,
@@ -94,7 +94,7 @@ export class App {
       height: 0.05,
       diameter: 1.5
     }, scene);
-    plate.position = new Vector3(0,0,0);
+    plate.position = new Vector3(0,0,-1);
     const plateDrag = new PointerDragBehavior({
       dragPlaneNormal: new Vector3(0,0,1)
     })
@@ -371,7 +371,7 @@ function spawnFruit(scene: Scene, models : Models) {
     //const randZ = 5
     // console.log(randX, randZ)
     // models.mesh.position = new Vector3(randX, 10, randZ)
-    models.mesh.position = new Vector3(randX - 3.5, 10, 0)
+    models.mesh.position = new Vector3(randX - 3.5, 10, -1)
   });
 }
 
