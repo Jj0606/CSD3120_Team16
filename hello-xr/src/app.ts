@@ -21,7 +21,7 @@ import {
 } from "babylonjs";
 
 import { AdvancedDynamicTexture, TextBlock } from "babylonjs-gui";
-import { Text, Spheres, Audio, Cubes, Models, Particles } from "../components";
+import { Text, Spheres, Audio, Cubes, Models, Particles, Behaviour } from "../components";
 import { EntityComponentSystem } from "./ecs"
 import { EnemyController } from "../controllers/index"
 
@@ -49,6 +49,7 @@ export class App {
   Update(scene: Scene) {
     scene.registerBeforeRender(function () {
       //Do all Game Based Updates here!
+      
     })
   }
 
@@ -62,16 +63,22 @@ export class App {
      * Testing new Entity Component System
      */
     this.ecs = new EntityComponentSystem();
+    this.ecs.RegisterComponent<Models>("Models");
     this.ecs.RegisterComponent<Cubes>("Cubes");
     this.ecs.RegisterComponent<Models>("Models");
     this.ecs.RegisterComponent<Particles>("Particles");
+    this.ecs.RegisterComponent<Behaviour>("Behaviour");
 
-    let entity = this.ecs.MakeEntity("Large Cube");
-    this.ecs.AddComponent<Cubes>("Cubes", new Cubes("a cube", { size: 20 }, scene), entity);
-    this.ecs.HasComponent("Cubes", entity);
-    this.ecs.GetComponent<Cubes>("Cubes", entity).position.set(20, 0, 0);
+    // let entity = this.ecs.MakeEntity("Large Cube");
+    // this.ecs.AddComponent<Cubes>("Cubes", new Cubes("a cube", { size: 20 }, scene), entity);
+    // this.ecs.HasComponent("Cubes", entity);
+    // this.ecs.GetComponent<Cubes>("Cubes", entity).position.set(20, 0, 0);
 
     let enemyController = new EnemyController(this.ecs, scene, 10);
+    scene.registerBeforeRender(function () {
+      //Do all Game Based Updates here!
+      enemyController.Update();
+    })
 
     scene.createDefaultCameraOrLight(false, true, true);
 
@@ -163,7 +170,7 @@ export class App {
     //enabled features
     console.log(featureManager.getEnabledFeatures());
 
-    this.Update(scene); //This is where all game loop stuff happens
+    //this.Update(scene); //This is where all game loop stuff happens
 
     return scene;
   } //END OF CREATE XR SCENE
@@ -226,6 +233,8 @@ export class App {
         );
         break;
     }
+
+   
 
 
   }

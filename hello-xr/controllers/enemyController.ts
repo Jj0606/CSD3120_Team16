@@ -1,5 +1,5 @@
 import { CompareFunction, Scene, Texture, Vector3 } from "babylonjs";
-import { Text, Spheres, Audio, Cubes, Models, Particles, Meshes } from "../components";
+import { Text, Spheres, Audio, Cubes, Models, Particles, Meshes, Behaviour, EnemyBehaviour } from "../components";
 import { Controller } from "./controller";
 import { EntityComponentSystem } from "../src/ecs";
 
@@ -27,7 +27,11 @@ export class EnemyController extends Controller {
     }
 
     override Update() {
-
+        // for(let i = 0; i < this.numberOfEnemies; ++i)
+        // {
+        //     let behaviour = this.ecs.GetComponent<Behaviour>("Behaviour",this.mEntities[i]);
+        //     behaviour.Awake();
+        // }
     }
 
     override Exit() {
@@ -38,6 +42,7 @@ export class EnemyController extends Controller {
         let enemy = this.ecs.MakeEntity("Enemy");
         let cube = new Cubes("Enemy", { size: 2 }, this.scene);
         this.ecs.AddComponent<Cubes>("Cubes", cube, enemy);
+        
         return enemy;
     }
 }

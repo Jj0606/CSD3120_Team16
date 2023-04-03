@@ -77,7 +77,7 @@ export class EntityComponentSystem {
      * @param entity Entity you want to add to component
      */
     AddComponent<T>(componentName: string, component: T, entity: Entity) {
-        for (let i = 0; i < this.arrayOfComponentArrays.length; ++i) {
+        for (let i = 0; i < this.numberOfComponents; ++i) {
             if (this.arrayOfComponentArrays[i] instanceof IComponentArray<T>) {
                 /**
                  *    01000110 -> Entity Bitset
@@ -88,7 +88,7 @@ export class EntityComponentSystem {
                 let newentitysignature = this.entityBitSets[entity] | this.mapComponentToBitset.get(componentName);
                 this.entityBitSets[entity] = newentitysignature; //update entity signature
                 this.arrayOfComponentArrays[i][entity] = component; //might fail here
-                console.log("Added Component to Entity " + entity + ", Bitset ", + this.entityBitSets[entity]);
+                console.log("Added Component " + componentName + " to Entity " + entity + ", Bitset ", + this.entityBitSets[entity]);
             }
         }
     }
@@ -130,7 +130,7 @@ export class EntityComponentSystem {
      * @returns 
      */
     GetComponent<T>(componentName: string, entity: Entity): T {
-        for (let i = 0; i < this.arrayOfComponentArrays.length; ++i) {
+        for (let i = 0; i < this.numberOfComponents; ++i) {
             if (this.arrayOfComponentArrays[i] instanceof IComponentArray<T>) {
                 /**
                  *   01000110 -> Entity Bitset
@@ -144,7 +144,7 @@ export class EntityComponentSystem {
 
                 if (result) {
                     let component = this.arrayOfComponentArrays[i][entity] as T;
-                    console.log("Retrieving Component: {" + component.toString() +  "} of Entity " + entity);
+                    console.log("Retrieving Component: {" + componentName +  "} of Entity " + entity);
                     return component;
                 }
                 else {
