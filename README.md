@@ -23,7 +23,7 @@ Assets - all the assets such as models and textures used for the application
 
 ## User Evaluations 
 
-../CSD3120_Team16\User Evaluations
+[User Evaluations](https://github.com/Jj0606/CSD3120_Team16/tree/main/User%20Evaluations)
 
 ## How to navigate in the Game
 
