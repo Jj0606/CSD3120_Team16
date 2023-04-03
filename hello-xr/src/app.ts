@@ -25,6 +25,7 @@ import { AdvancedDynamicTexture, TextBlock, } from "babylonjs-gui";
 import { Text, Spheres, Audio, Cubes, Models, Particles } from "../components";
 import "babylonjs-loaders";
 var timer = 0;
+var score = 0;
 var intervalId;
 var timeoutId;
 
@@ -143,9 +144,23 @@ export class App {
         if (mesh.name == "New Fruit" && !mesh.parent) {
           mesh.position.y -= 3.0 * delta / 1000
           //console.log(scene.deltaTime)
+          score++; // increment the score
+          testText.textBlock.text = "Score: " + score; // update the score text
         }
       }
     })
+    
+    //Scoring stuff put here but will clean later
+    // scene.registerAfterRender(() => {
+    //   for (let mesh of scene.meshes) {
+    //     if (mesh.name === "New Fruit" && mesh.intersectsMesh(plate, true)) {
+    //       mesh.dispose(); // remove the fruit from the scene
+    //       score++; // increment the score
+    //       testText.textBlock.text = "Score: " + score; // update the score text
+    //     }
+    //   }
+    // });
+    
     //TIMER STUFF HERE
     intervalId = setInterval(function() {
       timer++;
@@ -167,6 +182,7 @@ export class App {
         clearTimeout(timeoutId);
         clearInterval(intervalId);
         timer = 0;
+        score = 0;
         intervalId = setInterval(function() {
           timer++;
           testText.textBlock.text = ("Timer: " + timer);
