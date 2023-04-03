@@ -184,6 +184,11 @@ export class App {
       {
         clearTimeout(timeoutId);
         clearInterval(intervalId);
+        for (let mesh of scene.meshes) {
+          if (mesh.name == "New Fruit") {
+            mesh.dispose();
+          }
+        }
         timer = 0;
         score = 0;
         offset = 0;
