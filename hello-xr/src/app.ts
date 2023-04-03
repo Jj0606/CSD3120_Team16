@@ -288,8 +288,8 @@ function spawnFruit(scene: Scene, models : Models) {
   models.loadModels(fruitName, () => {
     //ADD BEHAVIOURS HERE
     models.mesh.name = "New Fruit"
-    const randX = Math.random() * 10 - 5;
-    const randZ = Math.random() * 10 - 5;
+    const randX = Math.random() * 7;
+    const randZ = Math.random() * 7;
     //const randX = 0
     //const randZ = 5
     console.log(randX, randZ)
