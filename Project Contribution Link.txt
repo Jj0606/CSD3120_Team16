@@ -1,2 +1,5 @@
 Trello Project Contribution link:
 https://trello.com/b/vqL5qzG1
+
+We used github as our main platform along side trello for task distribution.
+Task was assigned and regularly updated.
