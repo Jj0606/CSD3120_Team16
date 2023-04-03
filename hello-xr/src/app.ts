@@ -158,7 +158,7 @@ export class App {
     timeoutId = setTimeout(() => {
       clearInterval(intervalId);
       testText.textBlock.text = ("Times Up!");
-    }, 10000);
+    }, 30000);
  
   
     window.addEventListener('keydown',e => {
@@ -176,7 +176,7 @@ export class App {
         timeoutId = setTimeout(() => {
           clearInterval(intervalId);
           testText.textBlock.text = ("Times Up!");
-        }, 10000);
+        }, 30000);
      
       }
   });
