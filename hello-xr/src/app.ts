@@ -50,7 +50,7 @@ export class App {
     scene.actionManager = new ActionManager(scene);
 
     scene.createDefaultCameraOrLight(false, true, true);
-    scene.activeCamera.position = new Vector3(0,0, -5)
+    scene.activeCamera.position = new Vector3(0, 4, -8)
 
     //the following are test codes for the setups, they are to be changed
     const testText = new Text(
@@ -84,7 +84,7 @@ export class App {
     }, scene);
     plate.position = new Vector3(0,0,0);
     const plateDrag = new PointerDragBehavior({
-      dragPlaneNormal: new Vector3(0,1,0)
+      dragPlaneNormal: new Vector3(0,0,1)
     })
     plate.addBehavior(plateDrag)
     const plateMaterial = new StandardMaterial("plateMaterial", scene); //create material
@@ -342,14 +342,14 @@ function combine(scene: Scene, plate: Mesh, models: AbstractMesh) {
   if (models) {
     const isIntersecting = models.intersectsMesh(plate, true, true);  
     if (isIntersecting) {
-      // console.log(plate.position.x, models.mesh.position.x, models.mesh.position.y);
-      console.log("   plate x: " + plate.position.x)
-      console.log("   fruit x: " + models.position.x + " " + models.position.y)
-      const offsetY = plate.scaling.y/2;
+      const offsetY = plate.scaling.y/4;
       const offset = new Vector3(0, offsetY, 0);
-      models.position = plate.position.add(offset);
+      // models.position = plate.position.add(offset);
+      models.position = offset;
       // models.position = plate.position;
       models.parent = plate;
+      console.log("   plate x: " + plate.position.x)
+      console.log("   fruit x: " + models.position.x + " " + models.position.y)
       // console.log(testApple.name + " is intersecting plate");
     }
   }
