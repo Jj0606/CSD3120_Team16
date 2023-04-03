@@ -341,8 +341,8 @@ function combine(scene: Scene, plate: Mesh, models: AbstractMesh, offsetY : numb
   if (models) {
     const isIntersecting = models.intersectsMesh(plate, true, true);  
     if (isIntersecting) {
-      const offsetY = plate.scaling.y/4;
-      const offset = new Vector3(0, offsetY, 0);
+      offsetY += plate.scaling.y/4;
+      const offset = new Vector3(Math.random() - 0.5, offsetY, Math.random() - 0.5);
       // models.position = plate.position.add(offset);
       
       // models.position = plate.position;
