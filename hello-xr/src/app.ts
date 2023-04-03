@@ -162,7 +162,7 @@ export class App {
       console.log("Timer: " + timer);
     }, 1000);
 
-    setInterval(spawnFruit, 1000, scene, testmodels)
+    const fruitInterval = setInterval(spawnFruit, 1000, scene, testmodels)
   
     timeoutId = setTimeout(() => {
       clearInterval(intervalId);
@@ -182,7 +182,9 @@ export class App {
           timerText.textBlock.text = ("Timer: " + timer);
           console.log("Timer: " + timer);
         }, 1000);
-    
+
+        const fruitInterval = setInterval(spawnFruit, 1000, scene, testmodels)
+
         timeoutId = setTimeout(() => {
           clearInterval(intervalId);
           timerText.textBlock.text = ("Times Up!");
