@@ -45,7 +45,7 @@ export class App {
     scene.actionManager = new ActionManager(scene);
 
     scene.createDefaultCameraOrLight(false, true, true);
-    scene.activeCamera.position = new Vector3(0, 4, -8)
+    scene.activeCamera.position = new Vector3(0, 1, -8)
 
     //the following are test codes for the setups, they are to be changed
     const scoreText = new Text(
@@ -54,8 +54,8 @@ export class App {
       0.2,
       450,
       100,
-      new Vector3(0, 1, 0),
-      "white",
+      new Vector3(0, 1, 1),
+      "transparent",
       "black",
       50,
       scene
@@ -63,13 +63,13 @@ export class App {
     const timerText = new Text(
       "Timer: 0",
       1,
-      0.2,
+      1,
       450,
+      450,
+      new Vector3(0, 1.5, 1),
+      "transparent",
+      "cyan",
       100,
-      new Vector3(0, 1.5, 0),
-      "white",
-      "black",
-      50,
       scene
     );
 
@@ -350,7 +350,7 @@ function spawnFruit(scene: Scene, models : Models) {
     //const randZ = 5
     // console.log(randX, randZ)
     // models.mesh.position = new Vector3(randX, 10, randZ)
-    models.mesh.position = new Vector3(randX, 10, 0)
+    models.mesh.position = new Vector3(randX - 3.5, 10, 0)
   });
 }
 
