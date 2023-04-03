@@ -48,8 +48,8 @@ export class App {
     scene.activeCamera.position = new Vector3(0, 4, -8)
 
     //the following are test codes for the setups, they are to be changed
-    const testText = new Text(
-      "testblock",
+    const scoreText = new Text(
+      "Score: 0",
       1,
       0.2,
       450,
@@ -60,7 +60,18 @@ export class App {
       50,
       scene
     );
-   
+    const timerText = new Text(
+      "Timer: 0",
+      1,
+      0.2,
+      450,
+      100,
+      new Vector3(0, 1.5, 0),
+      "white",
+      "black",
+      50,
+      scene
+    );
 
     const testAudio = new Audio(scene);
     testAudio.createBGM("audio/8bit.mp3");
@@ -117,7 +128,7 @@ export class App {
           mesh.position.y -= 3.0 * delta / 1000
           //console.log(scene.deltaTime)
           score++; // increment the score
-          testText.textBlock.text = "Score: " + score; // update the score text
+          scoreText.textBlock.text = "Score: " + score; // update the score text
         }
       }
     })
@@ -147,7 +158,7 @@ export class App {
     //TIMER STUFF HERE
     intervalId = setInterval(function() {
       timer++;
-      testText.textBlock.text = ("Timer: " + timer);
+      timerText.textBlock.text = ("Timer: " + timer);
       console.log("Timer: " + timer);
     }, 1000);
 
@@ -155,7 +166,7 @@ export class App {
   
     timeoutId = setTimeout(() => {
       clearInterval(intervalId);
-      testText.textBlock.text = ("Times Up!");
+      timerText.textBlock.text = ("Times Up!");
     }, 30000);
   
     window.addEventListener('keydown',e => {
@@ -168,13 +179,13 @@ export class App {
         offset = 0;
         intervalId = setInterval(function() {
           timer++;
-          testText.textBlock.text = ("Timer: " + timer);
+          timerText.textBlock.text = ("Timer: " + timer);
           console.log("Timer: " + timer);
         }, 1000);
     
         timeoutId = setTimeout(() => {
           clearInterval(intervalId);
-          testText.textBlock.text = ("Times Up!");
+          timerText.textBlock.text = ("Times Up!");
         }, 30000);
 
         
