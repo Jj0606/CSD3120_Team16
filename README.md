@@ -20,7 +20,7 @@ Within the project hello-xr, the file structure as shown<br>
 Assets - all the assets such as models and textures used for the application
 
 ## Video Demo Link
-
+View the Video Demo [here](https://github.com/Jj0606/CSD3120_Team16/blob/main/Presentation%20Video.mp4)
 ## User Evaluations 
 
 View the User Evaluations [here](https://github.com/Jj0606/CSD3120_Team16/tree/main/User%20Evaluations).
