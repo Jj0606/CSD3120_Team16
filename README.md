@@ -10,7 +10,7 @@
 | Nurul Dania Binte Mohd Rizal  | 2002538       |
 
 ## Description
-In this team group project, we decided to make a game. Our game is about catching the fruits while avoiding bombs in order to achieve the highest score possible.
+In this team group project, we decided to make a game. Our game is about catching the fruits while avoiding bombs in order to achieve the highest score possible. To navigate within the scene, view the available [Implementations](https://github.com/Jj0606/CSD3120_Team16#implementations).
 
 ## File Structure
 <p>
@@ -23,7 +23,7 @@ Assets - all the assets such as models and textures used for the application
 
 ## User Evaluations 
 
-[User Evaluations](https://github.com/Jj0606/CSD3120_Team16/tree/main/User%20Evaluations)
+View the User Evaluations [here](https://github.com/Jj0606/CSD3120_Team16/tree/main/User%20Evaluations).
 
 ## How to navigate in the Game
 
@@ -37,11 +37,12 @@ Some useful keyboard shortcuts:
 
 | Keys      | Uses |
 | :-------- | :--- |
-| `Q`       | Toggle boundingBoxGizmo       |
-| `W`       | Toggle positionGizmoEnabled   |
-| `E`       | Toggle scaleGizmoEnabled      |
-| `O`       | Toggle rotationGizmoEnabled   |
-| `R`       | Reset Game                    |
+| `Q`           | Toggle boundingBoxGizmo       |
+| `W`           | Toggle positionGizmoEnabled   |
+| `E`           | Toggle scaleGizmoEnabled      |
+| `O`           | Toggle rotationGizmoEnabled   |
+| `R`           | Reset Game                    |
+| `Arrow Keys`  | Move Camera Within The Scene  |
 
 Vr controller implementations:
 
@@ -50,6 +51,11 @@ Vr controller implementations:
 
 
 ## Instructions
+
+Open project and go to `hello-xr` folder directory
+```
+cd hello-xr
+```
 
 Install npm
 ```
