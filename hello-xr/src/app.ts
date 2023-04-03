@@ -1,8 +1,13 @@
+/**
+ * @file app.ts
+ * @author [Jolyn Wong, Leonard Koh, Pho Kai Ting, Denise Goh, Yu Ching Yin]
+ * @desc Contains information for the class App that contains function to createXR
+ */
+
 import {
   ActionManager,
   Color3,
   Engine,
-  HtmlElementTexture,
   Mesh,
   MeshBuilder,
   PointerDragBehavior,
@@ -19,9 +24,11 @@ import {
   CubeTexture,
   AbstractMesh,
 } from "babylonjs";
-import { AdvancedDynamicTexture, TextBlock, } from "babylonjs-gui";
-import { Text, Spheres, Audio, Cubes, Models, Particles } from "../components";
+import {  TextBlock, } from "babylonjs-gui";
+import { Text, Audio, Models } from "../components";
 import "babylonjs-loaders";
+
+//Variable Decalaration here
 var timer = 0;
 var score = 0;
 var offset = 0;
@@ -29,25 +36,40 @@ var intervalId;
 var timeoutId;
 var fruitInterval;
 
+/**
+ * @class App 
+ * @desc An application class that can be imported in another file
+ */
 export class App {
   private engine: Engine;
   private canvas: HTMLCanvasElement;
   
+  /**
+     * Class constructor for an application
+     * @param engine An engine object
+     * @param canvas An HTML canvas element
+     */
   constructor(engine: Engine, canvas: HTMLCanvasElement) {
     this.engine = engine;
     this.canvas = canvas;
     console.log("app is running");
   }
-
+  /**
+     * Renders the interactive AR/VR scene when user clicks the "XR Format" button in
+     * the XRAuthor interface
+     * @param canvasID is the string ID of the HTMLCanvasElement target to render the scene into
+     */
   async createXRScene(canvasID: string) {
     this.canvas.id = canvasID;
 
     const scene = new Scene(this.engine);
     scene.actionManager = new ActionManager(scene);
 
+    //DEFAULT CAMERA AND LIGHT
     scene.createDefaultCameraOrLight(false, true, true);
     scene.activeCamera.position = new Vector3(0, 1, -10)
 
+    //TEXT PLANES
     const scoreText = new Text(
       "Score: 0",
       1,
@@ -73,21 +95,12 @@ export class App {
       scene
     );
 
-    const testAudio = new Audio(scene);
-    testAudio.createBGM("audio/8bit.mp3");
-    testAudio.BGM.setVolume(0.3);
-
+    //creating skybox 
     this.createSkyBox(scene);
 
-    // //create farm
-    // const farmModel = new Models("farmModel", scene);
-    // farmModel.loadModels("farm.glb", () => {
-    //   farmModel.mesh.position.set(0, 10, 8);
-    //   farmModel.mesh.scaling.set(100, 100, 100);
-    // });
 
     //create models
-    const testmodels = new Models("testmodels", scene);
+    const model = new Models("testmodels", scene);
 
     //create plate
     const plate = MeshBuilder.CreateCylinder('plate', {
@@ -103,8 +116,6 @@ export class App {
     plateMaterial.diffuseColor = new Color3(0.8, 0.53, 0);
     plate.material = plateMaterial; //apply the material to the plate mesh
     
-
-
     //for the XR/VR experience
     const xr = await scene.createDefaultXRExperienceAsync({
       uiOptions: {
@@ -132,8 +143,6 @@ export class App {
       for (let mesh of scene.meshes) {
         if ((mesh.name == "New Fruit" || mesh.name == "Bomb") && !mesh.parent) {
           mesh.position.y -= 3.0 * delta / 1000
-          //console.log(scene.deltaTime)
-        
         }
       }
     })
@@ -155,7 +164,7 @@ export class App {
       console.log("Timer: " + timer);
     }, 1000);
 
-    fruitInterval = setInterval(spawnFruit, 1000, scene, testmodels)
+    fruitInterval = setInterval(spawnFruit, 1000, scene, model)
   
     timeoutId = setTimeout(() => {
       clearInterval(intervalId);
@@ -163,8 +172,7 @@ export class App {
       timerText.textBlock.text = ("Times Up!");
     }, 30000);
 
-
-  
+    //RESET KEY
     window.addEventListener('keydown',e => {
       if (e.key === 'r')
       {
@@ -174,11 +182,9 @@ export class App {
         clearTimeout(timeoutId);
         clearInterval(fruitInterval);
         clearInterval(intervalId);
-        testmodels.loadModels("bomb.glb", () => {
-          //ADD BEHAVIOURS HERE
-          
-          testmodels.mesh.position = plate.position.add(new Vector3(0,1,0)) 
-          testmodels.mesh.name = "Bomb"
+        model.loadModels("bomb.glb", () => {
+          model.mesh.position = plate.position.add(new Vector3(0,1,0)) 
+          model.mesh.name = "Bomb"
         });
 
         scoreText.textBlock.text = "Score: " + score; // update the score text
@@ -189,7 +195,7 @@ export class App {
           console.log("Timer: " + timer);
         }, 1000);
 
-        fruitInterval = setInterval(spawnFruit, 1000, scene, testmodels)
+        fruitInterval = setInterval(spawnFruit, 1000, scene, model)
 
         timeoutId = setTimeout(() => {
           clearInterval(intervalId);
@@ -235,6 +241,7 @@ export class App {
     //enabled features
     console.log(featureManager.getEnabledFeatures());
 
+    //DEBUGGING SHORTCUTS
     this.addGizmosKeyboardShortcut(scene); 
 
     return scene;
@@ -353,6 +360,11 @@ enum movementMode {
   Walk,
 }
 
+/**
+ * Function that spawns fruits at random
+ * @param scene 
+ * @param models 
+ */
 function spawnFruit(scene: Scene, models : Models) {
   const fruitArray = Array("apple.glb", "banana.glb", "orange.glb", "bomb.glb")
 
@@ -367,16 +379,20 @@ function spawnFruit(scene: Scene, models : Models) {
       models.mesh.name = "New Fruit"
     }
     
+    //RANDOMIZED THE POSITION SPAWNED FOR FRUITS
     const randX = Math.random() * 7;
-    const randZ = Math.random() * 7;
-    //const randX = 0
-    //const randZ = 5
-    // console.log(randX, randZ)
-    // models.mesh.position = new Vector3(randX, 10, randZ)
     models.mesh.position = new Vector3(randX - 3.5, 10, -1)
   });
 }
 
+/**
+ * function for combining mechanic
+ * @param scene 
+ * @param plate 
+ * @param models 
+ * @param offsetY 
+ * @param scoreText 
+ */
 function combine(scene: Scene, plate: Mesh, models: AbstractMesh, offsetY : number, scoreText: TextBlock) {
   if (models) {
     const isIntersecting = models.intersectsMesh(plate, true, true);  
@@ -384,12 +400,14 @@ function combine(scene: Scene, plate: Mesh, models: AbstractMesh, offsetY : numb
       if (models.name == "New Fruit") {
         offsetY += plate.scaling.y/4;
         const offset = new Vector3(Math.random() - 0.5, offsetY, Math.random() - 0.5);
+        //SCORING SYSTEM HERE
         score++; // increment the score
         scoreText.text = "Score: " + score; // update the score text
         models.parent = plate;
         models.position = offset;
       }
       if (models.name == "Bomb") {
+        //RESETS THE SCORE
         score = 0;
         scoreText.text = "Score: " + score; // update the score text
         for (let mesh of scene.meshes) {
