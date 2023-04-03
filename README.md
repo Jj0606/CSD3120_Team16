@@ -33,6 +33,11 @@ Step 3 - npm run build
 
 Step 4 - npm run serve
 
+# How to navigate in the Game
+This game is suppose to run using webXR using oculus quest for the most immersive experience 
+Using the controller trigger button to interact with the scene
+Interactions include: Moving the plate to catch the fruits, resetting the scene as well as teleportation
+
 ## Dependencies
 List of dependencies: <br>
     babylonjs<br>
