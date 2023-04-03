@@ -13,9 +13,9 @@
 
 # File Structure
 <p>
-  <img src="files.jpg" width="200" >
+  <img src="files.png" width="200" >
 </p>
-Within the project hello-xr, the file structure as shown
+Within the project hello-xr, the file structure as shown<br>
 Assets - all the assets such as models and textures used for the application
 
 # Video Demo Link
@@ -33,15 +33,15 @@ Step 3 - npm run build
 Step 4 - npm run serve
 
 ## Dependencies
-List of dependencies: 
-    babylonjs
-    babylonjs-gui
-    babylonjs-loaders
-    babylonjs-materials
-    copy-webpack-plugin
-    html-webpack-plugin
-    ts-loader
-    typescript
-    webpack
-    webpack-cli
-    webpack-dev-server
+List of dependencies: <br>
+    babylonjs<br>
+    babylonjs-gui<br>
+    babylonjs-loaders<br>
+    babylonjs-materials<br>
+    copy-webpack-plugin<br>
+    html-webpack-plugin<br>
+    ts-loader<br>
+    typescript<br>
+    webpack<br>
+    webpack-cli<br>
+    webpack-dev-server<br>
