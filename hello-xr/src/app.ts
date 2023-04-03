@@ -98,10 +98,9 @@ export class App {
     //creating skybox 
     this.createSkyBox(scene);
 
-
     //create models
     const model = new Models("testmodels", scene);
-
+    
     //create plate
     const plate = MeshBuilder.CreateCylinder('plate', {
       height: 0.05,
@@ -115,6 +114,9 @@ export class App {
     const plateMaterial = new StandardMaterial("plateMaterial", scene); //create material
     plateMaterial.diffuseColor = new Color3(0.8, 0.53, 0);
     plate.material = plateMaterial; //apply the material to the plate mesh
+
+    //create reset button
+    this.createRestartButton(scene, plate, model, scoreText, timerText);
     
     //for the XR/VR experience
     const xr = await scene.createDefaultXRExperienceAsync({
@@ -347,6 +349,50 @@ export class App {
      skybox.material = skyboxMaterial;
 
   }
+
+  createRestartButton(scene:Scene, plate: Mesh, model: Models, scoreText:Text, timerText:Text) {
+    const resetButton = new Text(
+      "↻",
+      0.3,
+      0.3,
+      100,
+      100,
+      new Vector3(0.5, 1, 0),
+      "white",
+      "black",
+      50,
+      scene
+    );
+    resetButton.textBlock.onPointerDownObservable.add(() => {
+      timer = 0;
+      score = 0;
+      offset = 0;
+      clearTimeout(timeoutId);
+      clearInterval(fruitInterval);
+      clearInterval(intervalId);
+      model.loadModels("bomb.glb", () => {
+        model.mesh.position = plate.position.add(new Vector3(0,1,0)) 
+        model.mesh.name = "Bomb"
+      });
+
+      scoreText.textBlock.text = "Score: " + score; // update the score text
+
+      intervalId = setInterval(function() {
+        timer++;
+        timerText.textBlock.text = ("Timer: " + timer);
+        console.log("Timer: " + timer);
+      }, 1000);
+
+      fruitInterval = setInterval(spawnFruit, 1000, scene, model)
+
+      timeoutId = setTimeout(() => {
+        clearInterval(intervalId);
+        clearInterval(fruitInterval);
+        timerText.textBlock.text = ("Times Up!");
+      }, 30000);  
+    })
+}
+
 } //END OF EXPORT CLASS
 
 
