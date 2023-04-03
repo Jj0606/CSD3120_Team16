@@ -48,7 +48,6 @@ export class App {
     scene.createDefaultCameraOrLight(false, true, true);
     scene.activeCamera.position = new Vector3(0, 1, -8)
 
-    //the following are test codes for the setups, they are to be changed
     const scoreText = new Text(
       "Score: 0",
       1,
@@ -140,8 +139,6 @@ export class App {
       }
     })
 
-    
-
     //combine
     scene.registerBeforeRender( () => {
       for (let mesh of scene.meshes) {
@@ -151,17 +148,6 @@ export class App {
         }
       }
     })
-    
-    //Scoring stuff put here but will clean later
-    // scene.registerAfterRender(() => {
-    //   for (let mesh of scene.meshes) {
-    //     if (mesh.name === "New Fruit" && mesh.intersectsMesh(plate, true)) {
-    //       mesh.dispose(); // remove the fruit from the scene
-    //       score++; // increment the score
-    //       testText.textBlock.text = "Score: " + score; // update the score text
-    //     }
-    //   }
-    // });
     
     //TIMER STUFF HERE
     intervalId = setInterval(function() {
@@ -194,7 +180,8 @@ export class App {
             mesh.dispose();
           }
         }
-       
+        scoreText.textBlock.text = "Score: " + score; // update the score text
+
         intervalId = setInterval(function() {
           timer++;
           timerText.textBlock.text = ("Timer: " + timer);
@@ -207,9 +194,7 @@ export class App {
           clearInterval(intervalId);
           clearInterval(fruitInterval);
           timerText.textBlock.text = ("Times Up!");
-        }, 30000);
-
-        
+        }, 30000);      
       }
     });
 
@@ -332,7 +317,7 @@ export class App {
         if(e.key == 'e'){
             gizmoManager.scaleGizmoEnabled = !gizmoManager.scaleGizmoEnabled; 
         }
-        if(e.key == 'r'){
+        if(e.key == 'o'){
             gizmoManager.rotationGizmoEnabled = !gizmoManager.rotationGizmoEnabled;
         }
         if(e.key == 'q'){
