@@ -79,10 +79,16 @@ export class App {
 
     this.createSkyBox(scene);
 
+    // //create farm
+    // const farmModel = new Models("farmModel", scene);
+    // farmModel.loadModels("farm.glb", () => {
+    //   farmModel.mesh.position.set(0, 10, 8);
+    //   farmModel.mesh.scaling.set(100, 100, 100);
+    // });
+
     //create models
     const testmodels = new Models("testmodels", scene);
-    //const grab = new PointerDragBehavior({dragPlaneNormal: Vector3.Backward(),});
-    
+
     //create plate
     const plate = MeshBuilder.CreateCylinder('plate', {
       height: 0.05,
@@ -135,11 +141,12 @@ export class App {
 
     
 
+    //combine
     scene.registerBeforeRender( () => {
       for (let mesh of scene.meshes) {
         if (mesh.name == "New Fruit" && !mesh.parent) {
-          //check for intersection then combine?
-          combine(scene, plate, mesh, offset); ////////////////////////////////////////
+          //check for intersection then combine
+          combine(scene, plate, mesh, offset); 
         }
       }
     })
