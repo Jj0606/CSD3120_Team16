@@ -2,6 +2,7 @@ import {
   ActionManager,
   Animation,
   CannonJSPlugin,
+  Color3,
   Color4,
   Engine,
   HtmlElementTexture,
@@ -20,6 +21,7 @@ import {
   WebXRFeatureName,
   WebXRFeaturesManager,
   WebXRMotionControllerTeleportation,
+  GizmoManager,
 } from "babylonjs";
 import { AdvancedDynamicTexture, TextBlock, } from "babylonjs-gui";
 import { Text, Spheres, Audio, Cubes, Models, Particles } from "../components";
@@ -69,50 +71,52 @@ export class App {
     testAudio.createBGM("audio/8bit.mp3");
     testAudio.BGM.setVolume(0.3);
 
+    //create models
     const testmodels = new Models("testmodels", scene);
-    testmodels.loadModels("bomb.glb", () => {
-      //ADD BEHAVIOURS HERE
-      const h20modelGrab = new PointerDragBehavior({
-        dragPlaneNormal: Vector3.Backward(),
-      });
-      testmodels.mesh.addBehavior(h20modelGrab);
-      console.log("Model loaded!");
-    });
-    testmodels.loadModels("apple.glb", () => {
-      //ADD BEHAVIOURS HERE
-      const h20modelGrab = new PointerDragBehavior({
-        dragPlaneNormal: Vector3.Backward(),
-      });
-      testmodels.mesh.addBehavior(h20modelGrab);
+    const grab = new PointerDragBehavior({dragPlaneNormal: Vector3.Backward(),});
+    // testmodels.loadModels("bomb.glb", () => {
+    //   //ADD BEHAVIOURS HERE
+    //   const h20modelGrab = new PointerDragBehavior({
+    //     dragPlaneNormal: Vector3.Backward(),
+    //   });
+    //   testmodels.mesh.addBehavior(h20modelGrab);
+    //   console.log("Model loaded!");
+    // });
+    // testmodels.loadModels("apple.glb", () => {
+    //   //ADD BEHAVIOURS HERE
+    //   const h20modelGrab = new PointerDragBehavior({
+    //     dragPlaneNormal: Vector3.Backward(),
+    //   });
+    //   testmodels.mesh.addBehavior(h20modelGrab);
+    // });
+    // testmodels.loadModels("banana.glb", () => {
+    //   //ADD BEHAVIOURS HERE
+    //   const h20modelGrab = new PointerDragBehavior({
+    //     dragPlaneNormal: Vector3.Backward(),
+    //   });
+    //   testmodels.mesh.addBehavior(h20modelGrab);
+    // });
+    // testmodels.loadModels("orange.glb", () => {
+    //   //ADD BEHAVIOURS HERE
+    //   const h20modelGrab = new PointerDragBehavior({
+    //     dragPlaneNormal: Vector3.Backward(),
+    //   });
+    //   testmodels.mesh.addBehavior(h20modelGrab);
+    // });
 
-    });
-    testmodels.loadModels("banana.glb", () => {
-      //ADD BEHAVIOURS HERE
-      const h20modelGrab = new PointerDragBehavior({
-        dragPlaneNormal: Vector3.Backward(),
-      });
-      testmodels.mesh.addBehavior(h20modelGrab);
-
-    });
-    testmodels.loadModels("orange.glb", () => {
-      //ADD BEHAVIOURS HERE
-      const h20modelGrab = new PointerDragBehavior({
-        dragPlaneNormal: Vector3.Backward(),
-      });
-      testmodels.mesh.addBehavior(h20modelGrab);
-
-    });
-
+    //create plate
     const plate = MeshBuilder.CreateCylinder('plate', {
       height: 0.05,
       diameter: 1.5
     }, scene);
-
     plate.position = new Vector3(0,0,0);
     const plateDrag = new PointerDragBehavior({
       dragPlaneNormal: new Vector3(0,1,0)
     })
     plate.addBehavior(plateDrag)
+    const plateMaterial = new StandardMaterial("plateMaterial", scene); //create material
+    plateMaterial.diffuseColor = new Color3(0.8, 0.53, 0);
+    plate.material = plateMaterial; //apply the material to the plate mesh
     
     //spawnFruit(scene, testmodels)
 
@@ -148,6 +152,9 @@ export class App {
           testText.textBlock.text = "Score: " + score; // update the score text
         }
       }
+
+      //check for intersection then combine?
+      combine(scene, plate, testmodels, grab); ////////////////////////////////////////
     })
     
     //Scoring stuff put here but will clean later
@@ -174,7 +181,6 @@ export class App {
       clearInterval(intervalId);
       testText.textBlock.text = ("Times Up!");
     }, 30000);
- 
   
     window.addEventListener('keydown',e => {
       if (e.key === 'r')
@@ -195,7 +201,8 @@ export class App {
         }, 30000);
      
       }
-  });
+    });
+
     //locomotion
     const movement = movementMode.Teleportation;
     this.initLocomotion(movement, xr, featureManager, ground, scene);
@@ -215,6 +222,8 @@ export class App {
 
     //enabled features
     console.log(featureManager.getEnabledFeatures());
+
+    this.addGizmosKeyboardShortcut(scene); 
 
     return scene;
   } //END OF CREATE XR SCENE
@@ -283,6 +292,28 @@ export class App {
         break;
     }
   }
+
+  /**
+   * Add Gizmos shortcut to open inspector
+   * @param scene 
+   */
+  addGizmosKeyboardShortcut(scene: Scene) {
+    const gizmoManager = new GizmoManager(scene);
+    window.addEventListener('keydown', e=> {
+        if(e.key == 'w'){
+            gizmoManager.positionGizmoEnabled = !gizmoManager.positionGizmoEnabled;
+        }
+        if(e.key == 'e'){
+            gizmoManager.scaleGizmoEnabled = !gizmoManager.scaleGizmoEnabled; 
+        }
+        if(e.key == 'r'){
+            gizmoManager.rotationGizmoEnabled = !gizmoManager.rotationGizmoEnabled;
+        }
+        if(e.key == 'q'){
+            gizmoManager.boundingBoxGizmoEnabled = !gizmoManager.boundingBoxGizmoEnabled;
+        }
+    })
+  }
 } //END OF EXPORT CLASS
 
 
@@ -309,6 +340,22 @@ function spawnFruit(scene: Scene, models : Models) {
     //const randX = 0
     //const randZ = 5
     console.log(randX, randZ)
-    models.mesh.position = new Vector3(randX, 10, randZ)
+    // models.mesh.position = new Vector3(randX, 10, randZ)
+    models.mesh.position = new Vector3(randX, 10, 0)
   });
+}
+
+function combine(scene: Scene, plate: Mesh, models: Models, grab: PointerDragBehavior) {
+  if (models.mesh) {
+    const isIntersecting = models.mesh.intersectsMesh(plate, true, true);
+    if (isIntersecting) {
+      models.mesh.removeBehavior(grab);
+      const offsetY = plate.scaling.y/2;
+      const offset = new Vector3(0, offsetY, 0);
+      models.mesh.position = plate.position.add(offset);
+      // models.mesh.position = plate.position;
+      models.mesh.parent = plate;
+      // console.log(testApple.name + " is intersecting plate");
+    }
+  }
 }
