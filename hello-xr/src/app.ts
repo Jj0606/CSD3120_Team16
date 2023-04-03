@@ -222,6 +222,22 @@ export class App {
       console.log(error);
     }
 
+    let mesh: AbstractMesh;
+    xr.input.onControllerAddedObservable.add((controller) => {
+        controller.onMotionControllerInitObservable.add((motionController) => {
+            const trigger = motionController.getComponentOfType("trigger");
+            trigger.onButtonStateChangedObservable.add(() => {
+                if (trigger.changes.pressed) {
+                    if (trigger.pressed) {
+                        if (mesh = xr.pointerSelection.getMeshUnderPointer(controller.uniqueId)) {
+                            console.log(mesh.name)
+                        }
+                    }
+                }
+            })
+        })
+    })
+
     //enabled features
     console.log(featureManager.getEnabledFeatures());
 
@@ -344,9 +360,9 @@ enum movementMode {
 }
 
 function spawnFruit(scene: Scene, models : Models) {
-  const fruitArray = Array("apple.glb", "banana.glb", "orange.glb")
+  const fruitArray = Array("apple.glb", "banana.glb", "orange.glb", "bomb.glb")
 
-  const fruitType = Math.floor(Math.random() * 3)
+  const fruitType = Math.floor(Math.random() * 4)
   const fruitName = fruitArray[fruitType]
   models.loadModels(fruitName, () => {
     //ADD BEHAVIOURS HERE
