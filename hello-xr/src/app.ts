@@ -151,10 +151,11 @@ export class App {
       console.log("Timer: " + timer);
     }, 1000);
 
-    setInterval(spawnFruit, 1000, scene, testmodels)
+    const fruitInterval = setInterval(spawnFruit, 1000, scene, testmodels)
   
     timeoutId = setTimeout(() => {
       clearInterval(intervalId);
+      clearInterval(fruitInterval)
       testText.textBlock.text = ("Times Up!");
     }, 30000);
   
@@ -171,9 +172,12 @@ export class App {
           testText.textBlock.text = ("Timer: " + timer);
           console.log("Timer: " + timer);
         }, 1000);
-    
+
+        const fruitInterval = setInterval(spawnFruit, 1000, scene, testmodels)
+
         timeoutId = setTimeout(() => {
           clearInterval(intervalId);
+          clearInterval(fruitInterval)
           testText.textBlock.text = ("Times Up!");
         }, 30000);
 
