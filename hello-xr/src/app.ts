@@ -113,7 +113,7 @@ export class App {
     })
     plate.addBehavior(plateDrag)
     
-    spawnFruit(scene, testmodels)
+    //spawnFruit(scene, testmodels)
 
     //for the XR/VR experience
     const xr = await scene.createDefaultXRExperienceAsync({
@@ -153,6 +153,7 @@ export class App {
       console.log("Timer: " + timer);
     }, 1000);
 
+    setInterval(spawnFruit, 1000, scene, testmodels)
   
     timeoutId = setTimeout(() => {
       clearInterval(intervalId);
