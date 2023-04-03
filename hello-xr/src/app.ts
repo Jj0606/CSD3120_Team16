@@ -166,8 +166,11 @@ export class App {
   
     timeoutId = setTimeout(() => {
       clearInterval(intervalId);
+      clearInterval(fruitInterval);
       timerText.textBlock.text = ("Times Up!");
     }, 30000);
+
+
   
     window.addEventListener('keydown',e => {
       if (e.key === 'r')
@@ -187,6 +190,7 @@ export class App {
 
         timeoutId = setTimeout(() => {
           clearInterval(intervalId);
+          clearInterval(fruitInterval);
           timerText.textBlock.text = ("Times Up!");
         }, 30000);
 
