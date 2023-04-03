@@ -174,11 +174,13 @@ export class App {
         clearTimeout(timeoutId);
         clearInterval(fruitInterval);
         clearInterval(intervalId);
-        for (let mesh of scene.meshes) {
-          if (mesh.name == "New Fruit") {
-            mesh.dispose();
-          }
-        }
+        testmodels.loadModels("bomb.glb", () => {
+          //ADD BEHAVIOURS HERE
+          
+          testmodels.mesh.position = plate.position.add(new Vector3(0,1,0)) 
+          testmodels.mesh.name = "Bomb"
+        });
+
         scoreText.textBlock.text = "Score: " + score; // update the score text
 
         intervalId = setInterval(function() {
