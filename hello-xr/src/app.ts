@@ -130,7 +130,7 @@ export class App {
     scene.registerBeforeRender( () => {
       const delta = scene.deltaTime | 0
       for (let mesh of scene.meshes) {
-        if (mesh.name == "New Fruit" && !mesh.parent) {
+        if ((mesh.name == "New Fruit" || mesh.name == "Bomb") && !mesh.parent) {
           mesh.position.y -= 3.0 * delta / 1000
           //console.log(scene.deltaTime)
           score++; // increment the score
@@ -142,7 +142,7 @@ export class App {
     //combine
     scene.registerBeforeRender( () => {
       for (let mesh of scene.meshes) {
-        if (mesh.name == "New Fruit" && !mesh.parent) {
+        if ((mesh.name == "New Fruit" || mesh.name == "Bomb") && !mesh.parent) {
           //check for intersection then combine
           combine(scene, plate, mesh, offset); 
         }
@@ -359,7 +359,13 @@ function spawnFruit(scene: Scene, models : Models) {
   const fruitName = fruitArray[fruitType]
   models.loadModels(fruitName, () => {
     //ADD BEHAVIOURS HERE
-    models.mesh.name = "New Fruit"
+    if (fruitName == "bomb.glb") {
+      models.mesh.name = "Bomb"
+    }
+    else {
+      models.mesh.name = "New Fruit"
+    }
+    
     const randX = Math.random() * 7;
     const randZ = Math.random() * 7;
     //const randX = 0
@@ -374,16 +380,25 @@ function combine(scene: Scene, plate: Mesh, models: AbstractMesh, offsetY : numb
   if (models) {
     const isIntersecting = models.intersectsMesh(plate, true, true);  
     if (isIntersecting) {
-      offsetY += plate.scaling.y/4;
-      const offset = new Vector3(Math.random() - 0.5, offsetY, Math.random() - 0.5);
-      // models.position = plate.position.add(offset);
-      
-      // models.position = plate.position;
-      models.parent = plate;
-      models.position = offset;
-      console.log("   plate x: " + plate.position.x)
-      console.log("   fruit x: " + models.position.x + " " + models.position.y)
-      // console.log(testApple.name + " is intersecting plate");
+      if (models.name == "New Fruit") {
+        offsetY += plate.scaling.y/4;
+        const offset = new Vector3(Math.random() - 0.5, offsetY, Math.random() - 0.5);
+        // models.position = plate.position.add(offset);
+        
+        // models.position = plate.position;
+        models.parent = plate;
+        models.position = offset;
+        console.log("   plate x: " + plate.position.x)
+        console.log("   fruit x: " + models.position.x + " " + models.position.y)
+        // console.log(testApple.name + " is intersecting plate");
+      }
+      if (models.name == "Bomb") {
+        for (let mesh of scene.meshes) {
+          if (mesh.name == "New Fruit") {
+            mesh.dispose();
+          }
+        }
+      }
     }
   }
 }
