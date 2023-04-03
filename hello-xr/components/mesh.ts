@@ -1,6 +1,6 @@
 /**
  * @file mesh.ts
- * @author [Jolyn Wong, Leonard Koh, Pho Kai Ting, Denise Goh, Yu Ching Yin]
+ * @author [Jolyn Wong, Leonard Koh, Pho Kai Ting, Denise Goh, Yu Ching Yin, Javin Ong J-Min, Nurul Dania Binte Mohd Rizal]
  * @desc Contains information for creation of Spheres when being imported in another class
  */
 

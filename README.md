@@ -27,9 +27,9 @@ Assets - all the assets such as models and textures used for the application
 
 ## How to navigate in the Game
 
-- This game is suppose to run using webXR using oculus quest for the most immersive experience 
-- Using the controller trigger button to interact with the scene.
-- Interactions include: Moving the plate to catch the fruits, resetting the scene as well as teleportation
+- This game is suppose to run using webXR using oculus quest for the most immersive experience.
+- The controller squeeze button is used to interact with the scene.
+- Interactions include: Moving the plate to catch the fruits, resetting the scene as well as teleportation.
 
 ## Implementations
 
