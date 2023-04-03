@@ -23,6 +23,7 @@ import {
   WebXRMotionControllerTeleportation,
   GizmoManager,
   CubeTexture,
+  AbstractMesh,
 } from "babylonjs";
 import { AdvancedDynamicTexture, TextBlock, } from "babylonjs-gui";
 import { Text, Spheres, Audio, Cubes, Models, Particles } from "../components";
@@ -58,7 +59,7 @@ export class App {
       0.2,
       450,
       100,
-      new Vector3(1, 0, 0),
+      new Vector3(0, 1, 0),
       "white",
       "black",
       50,
@@ -74,7 +75,7 @@ export class App {
 
     //create models
     const testmodels = new Models("testmodels", scene);
-    const grab = new PointerDragBehavior({dragPlaneNormal: Vector3.Backward(),});
+    //const grab = new PointerDragBehavior({dragPlaneNormal: Vector3.Backward(),});
     
     //create plate
     const plate = MeshBuilder.CreateCylinder('plate', {
@@ -124,9 +125,15 @@ export class App {
           testText.textBlock.text = "Score: " + score; // update the score text
         }
       }
+    })
 
-      //check for intersection then combine?
-      combine(scene, plate, testmodels, grab); ////////////////////////////////////////
+    scene.registerBeforeRender( () => {
+      for (let mesh of scene.meshes) {
+        if (mesh.name == "New Fruit" && !mesh.parent) {
+          //check for intersection then combine?
+          combine(scene, plate, mesh); ////////////////////////////////////////
+        }
+      }
     })
     
     //Scoring stuff put here but will clean later
@@ -325,22 +332,24 @@ function spawnFruit(scene: Scene, models : Models) {
     const randZ = Math.random() * 7;
     //const randX = 0
     //const randZ = 5
-    console.log(randX, randZ)
+    // console.log(randX, randZ)
     // models.mesh.position = new Vector3(randX, 10, randZ)
     models.mesh.position = new Vector3(randX, 10, 0)
   });
 }
 
-function combine(scene: Scene, plate: Mesh, models: Models, grab: PointerDragBehavior) {
-  if (models.mesh) {
-    const isIntersecting = models.mesh.intersectsMesh(plate, true, true);
+function combine(scene: Scene, plate: Mesh, models: AbstractMesh) {
+  if (models) {
+    const isIntersecting = models.intersectsMesh(plate, true, true);  
     if (isIntersecting) {
-      models.mesh.removeBehavior(grab);
+      // console.log(plate.position.x, models.mesh.position.x, models.mesh.position.y);
+      console.log("   plate x: " + plate.position.x)
+      console.log("   fruit x: " + models.position.x + " " + models.position.y)
       const offsetY = plate.scaling.y/2;
       const offset = new Vector3(0, offsetY, 0);
-      models.mesh.position = plate.position.add(offset);
-      // models.mesh.position = plate.position;
-      models.mesh.parent = plate;
+      models.position = plate.position.add(offset);
+      // models.position = plate.position;
+      models.parent = plate;
       // console.log(testApple.name + " is intersecting plate");
     }
   }
