@@ -27,6 +27,7 @@ var score = 0;
 var offset = 0;
 var intervalId;
 var timeoutId;
+var fruitInterval;
 
 export class App {
   private engine: Engine;
@@ -169,7 +170,7 @@ export class App {
       console.log("Timer: " + timer);
     }, 1000);
 
-    const fruitInterval = setInterval(spawnFruit, 1000, scene, testmodels)
+    fruitInterval = setInterval(spawnFruit, 1000, scene, testmodels)
   
     timeoutId = setTimeout(() => {
       clearInterval(intervalId);
@@ -182,23 +183,25 @@ export class App {
     window.addEventListener('keydown',e => {
       if (e.key === 'r')
       {
+        timer = 0;
+        score = 0;
+        offset = 0;
         clearTimeout(timeoutId);
+        clearInterval(fruitInterval);
         clearInterval(intervalId);
         for (let mesh of scene.meshes) {
           if (mesh.name == "New Fruit") {
             mesh.dispose();
           }
         }
-        timer = 0;
-        score = 0;
-        offset = 0;
+       
         intervalId = setInterval(function() {
           timer++;
           timerText.textBlock.text = ("Timer: " + timer);
           console.log("Timer: " + timer);
         }, 1000);
 
-        const fruitInterval = setInterval(spawnFruit, 1000, scene, testmodels)
+        fruitInterval = setInterval(spawnFruit, 1000, scene, testmodels)
 
         timeoutId = setTimeout(() => {
           clearInterval(intervalId);
