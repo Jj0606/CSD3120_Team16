@@ -10,6 +10,7 @@
 | Nurul Dania Binte Mohd Rizal  | 2002538       |
 
 # Description
+In this team group project, we decided to make a game. Our game is about catching the fruits while avoiding bombs in order to achieve the highest score possible.
 
 # File Structure
 <p>
