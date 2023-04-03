@@ -9,45 +9,74 @@
 | Javin Ong J-Min               | 2000578       |
 | Nurul Dania Binte Mohd Rizal  | 2002538       |
 
-# Description
+## Description
 In this team group project, we decided to make a game. Our game is about catching the fruits while avoiding bombs in order to achieve the highest score possible.
 
-# File Structure
+## File Structure
 <p>
   <img src="files.png" width="200" >
 </p>
 Within the project hello-xr, the file structure as shown<br>
 Assets - all the assets such as models and textures used for the application
 
-# Video Demo Link
+## Video Demo Link
 
-# User Evaluations 
+## User Evaluations 
+
 ../CSD3120_Team16\User Evaluations
 
-# Instructions
-Step 1 - npm install
+## How to navigate in the Game
 
-Step 2 - npm install copy-webpack-plugin --save-dev
+- This game is suppose to run using webXR using oculus quest for the most immersive experience 
+- Using the controller trigger button to interact with the scene.
+- Interactions include: Moving the plate to catch the fruits, resetting the scene as well as teleportation
 
-Step 3 - npm run build
+## Implementations
 
-Step 4 - npm run serve
+Some useful keyboard shortcuts:
 
-# How to navigate in the Game
-This game is suppose to run using webXR using oculus quest for the most immersive experience 
-Using the controller trigger button to interact with the scene
-Interactions include: Moving the plate to catch the fruits, resetting the scene as well as teleportation
+| Keys      | Uses |
+| :-------- | :--- |
+| `Q`       | Toggle boundingBoxGizmo       |
+| `W`       | Toggle positionGizmoEnabled   |
+| `E`       | Toggle scaleGizmoEnabled      |
+| `O`       | Toggle rotationGizmoEnabled   |
+| `R`       | Reset Game                    |
+
+Vr controller implementations:
+
+- Use controllers `squeeze button` to select and move any objects in the scene.  
+- Use controllers `squeeze button` to select `↻` button in the scene to reset game. 
+
+
+## Instructions
+
+Install npm
+```
+npm install
+npm install copy-webpack-plugin --save-dev
+```
+Build and run server
+```
+npm run build
+npm run serve
+```
+>*Then proceed to [Hello XR](http://localhost:3000/).*
 
 ## Dependencies
-List of dependencies: <br>
-    babylonjs<br>
-    babylonjs-gui<br>
-    babylonjs-loaders<br>
-    babylonjs-materials<br>
-    copy-webpack-plugin<br>
-    html-webpack-plugin<br>
-    ts-loader<br>
-    typescript<br>
-    webpack<br>
-    webpack-cli<br>
-    webpack-dev-server<br>
+
+List of dependencies:
+
+```
+babylonjs
+babylonjs-gui
+babylonjs-loaders
+babylonjs-materials
+copy-webpack-plugin
+html-webpack-plugin
+ts-loader
+typescript
+webpack
+webpack-cli
+webpack-dev-server
+```
